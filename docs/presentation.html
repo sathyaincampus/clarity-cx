@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarity CX — Capstone Presentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/night.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #06b6d4;
+            --accent-light: #67e8f9;
+            --accent-dim: rgba(6, 182, 212, 0.15);
+            --green: #22c55e;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --purple: #a78bfa;
+            --blue: #3b82f6;
+        }
+
+        .reveal {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 30px;
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3 {
+            color: var(--accent-light);
+            text-transform: none;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, var(--accent-light), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            margin-bottom: 0.8em;
+        }
+
+        .reveal h3 {
+            font-size: 1.1em;
+            color: var(--purple);
+        }
+
+        .reveal table {
+            font-size: 0.7em;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .reveal table th {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--accent-light);
+            padding: 12px 16px;
+            font-weight: 600;
+            text-align: left;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .reveal table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .reveal .highlight {
+            background: var(--accent-dim);
+            color: var(--accent-light);
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .reveal .badge {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--green);
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.65em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .reveal .badge-orange {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--orange);
+        }
+
+        .reveal .badge-blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue);
+        }
+
+        .reveal .badge-purple {
+            background: rgba(167, 139, 250, 0.15);
+            color: var(--purple);
+        }
+
+        .reveal .badge-red {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+        }
+
+        .reveal ul {
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+
+        .reveal li {
+            margin-bottom: 6px;
+        }
+
+        .reveal .small {
+            font-size: 0.6em;
+            color: #64748b;
+        }
+
+        .reveal .subtitle {
+            color: #94a3b8;
+            font-size: 0.8em;
+            font-weight: 300;
+        }
+
+        .reveal blockquote {
+            background: rgba(6, 182, 212, 0.08);
+            border-left: 4px solid var(--accent);
+            padding: 16px 24px;
+            border-radius: 0 12px 12px 0;
+            font-style: normal;
+            width: 85%;
+            margin: 0.5em auto;
+        }
+
+        .reveal .emoji-title {
+            font-size: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 1em 0;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+        }
+
+        .metric-card .emoji {
+            font-size: 1.4em;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .metric-card .value {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--accent-light);
+            display: block;
+        }
+
+        .metric-card .label {
+            font-size: 0.55em;
+            color: #94a3b8;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin: 1em 0;
+        }
+
+        .agent-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .agent-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.15);
+        }
+
+        .agent-card .emoji {
+            font-size: 1.8em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .agent-card .name {
+            font-size: 0.6em;
+            font-weight: 600;
+            color: var(--accent-light);
+            display: block;
+        }
+
+        .agent-card .desc {
+            font-size: 0.45em;
+            color: #94a3b8;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 1.5em 0;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-step {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 14px 18px;
+            text-align: center;
+            min-width: 110px;
+        }
+
+        .pipeline-step .emoji {
+            font-size: 1.3em;
+            display: block;
+        }
+
+        .pipeline-step .label {
+            font-size: 0.5em;
+            display: block;
+            margin-top: 4px;
+            color: #94a3b8;
+        }
+
+        .pipeline-arrow {
+            font-size: 1.2em;
+            color: var(--accent);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            text-align: left;
+        }
+
+        .col-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .col-box h3 {
+            margin-top: 0;
+            font-size: 0.85em;
+        }
+
+        .score-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            font-size: 0.65em;
+        }
+
+        .score-bar .bar-label {
+            width: 120px;
+            text-align: right;
+            color: #94a3b8;
+        }
+
+        .score-bar .bar {
+            flex: 1;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .score-bar .bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+        }
+
+        .score-bar .bar-value {
+            width: 45px;
+            color: var(--accent-light);
+            font-weight: 600;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 1em 0;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .tech-item .tech-label {
+            font-size: 0.5em;
+            color: #64748b;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+
+        .tech-item .tech-name {
+            font-size: 0.7em;
+            font-weight: 600;
+            color: var(--accent-light);
+        }
+
+        .reveal .slides section {
+            padding: 20px 40px;
+        }
+
+        .gantt-phases {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 1em 0;
+        }
+
+        .gantt-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gantt-label {
+            width: 140px;
+            font-size: 0.55em;
+            text-align: right;
+            color: #94a3b8;
+        }
+
+        .gantt-bar {
+            height: 22px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 0.45em;
+            font-weight: 600;
+            color: white;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            font-size: 0.6em;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .feature-item .check {
+            color: var(--green);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section>
+                <p class="emoji-title">📞</p>
+                <h1>Clarity CX</h1>
+                <h3>AI-Powered Call Center Intelligence Platform</h3>
+                <p><em>"Contact Center Brain"</em></p>
+                <p class="subtitle">Applied Agentic AI for SWEs — Capstone Project</p>
+                <p class="small">February 22, 2026</p>
+            </section>
+
+            <!-- Slide 2: Problem Statement -->
+            <section>
+                <h2>The Problem</h2>
+                <blockquote>
+                    Call centers generate <span class="highlight">millions of conversations daily</span>.
+                    Crucial insights are trapped in long transcripts and voice recordings.
+                    Manual QA is <span class="highlight">slow, inconsistent, and expensive</span>.
+                </blockquote>
+                <div class="metrics-grid" style="margin-top: 1.2em;">
+                    <div class="metric-card">
+                        <span class="emoji">⏱️</span>
+                        <span class="value">15 min</span>
+                        <span class="label">Manual QA per call</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="emoji">📊</span>
+                        <span class="value">3%</span>
+                        <span class="label">Calls reviewed manually</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="emoji">❌</span>
+                        <span class="value">40%</span>
+                        <span class="label">Inconsistent scores</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="emoji">💰</span>
+                        <span class="value">$2.5K</span>
+                        <span class="label">Cost per QA analyst/mo</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Solution -->
+            <section>
+                <h2>The Solution: Clarity CX</h2>
+                <p class="subtitle">A multi-agent AI that transforms raw call data into structured summaries and QA
+                    insights</p>
+                <div class="pipeline-flow">
+                    <div class="pipeline-step">
+                        <span class="emoji">🎙️</span>
+                        <span class="label">Audio Upload</span>
+                    </div>
+                    <span class="pipeline-arrow">→</span>
+                    <div class="pipeline-step">
+                        <span class="emoji">📝</span>
+                        <span class="label">Transcription</span>
+                    </div>
+                    <span class="pipeline-arrow">→</span>
+                    <div class="pipeline-step">
+                        <span class="emoji">📋</span>
+                        <span class="label">Summarization</span>
+                    </div>
+                    <span class="pipeline-arrow">→</span>
+                    <div class="pipeline-step">
+                        <span class="emoji">📊</span>
+                        <span class="label">QA Scoring</span>
+                    </div>
+                    <span class="pipeline-arrow">→</span>
+                    <div class="pipeline-step">
+                        <span class="emoji">📈</span>
+                        <span class="label">Insights</span>
+                    </div>
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="emoji">⚡</span>
+                        <span class="value">&lt;60s</span>
+                        <span class="label">End-to-end analysis</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="emoji">📊</span>
+                        <span class="value">100%</span>
+                        <span class="label">Calls analyzed</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="emoji">🎯</span>
+                        <span class="value">95%</span>
+                        <span class="label">Scoring consistency</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="emoji">💰</span>
+                        <span class="value">10x</span>
+                        <span class="label">ROI improvement</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Architecture -->
+            <section>
+                <h2>Architecture Overview</h2>
+                <table>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Technology</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td>🖥️ UI</td>
+                        <td>Streamlit</td>
+                        <td>Upload, visualize, interact</td>
+                    </tr>
+                    <tr>
+                        <td>⚙️ API</td>
+                        <td>FastAPI</td>
+                        <td>REST endpoints, file handling</td>
+                    </tr>
+                    <tr>
+                        <td>🎭 Orchestration</td>
+                        <td>LangGraph</td>
+                        <td>Pipeline state machine</td>
+                    </tr>
+                    <tr>
+                        <td>🤖 Agents</td>
+                        <td>5 Specialists</td>
+                        <td>Intake → Transcribe → Summarize → Score → Route</td>
+                    </tr>
+                    <tr>
+                        <td>🧠 LLMs</td>
+                        <td>Gemini 2.0 Flash / GPT-4o / Claude</td>
+                        <td>Multi-provider with fallback</td>
+                    </tr>
+                    <tr>
+                        <td>🔧 Tools</td>
+                        <td>MCP Servers (7 tools)</td>
+                        <td>Whisper, Sentiment, PII, Formatter</td>
+                    </tr>
+                    <tr>
+                        <td>📊 Observability</td>
+                        <td>Arize Phoenix</td>
+                        <td>Tracing + latency + cost</td>
+                    </tr>
+                    <tr>
+                        <td>🚀 Deployment</td>
+                        <td>Docker + Cloud Run</td>
+                        <td>Containerized deployment</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- Slide 5: Agent Roster -->
+            <section>
+                <h2>5 Specialized Agents</h2>
+                <div class="agent-grid">
+                    <div class="agent-card">
+                        <span class="emoji">📥</span>
+                        <span class="name">Call Intake</span>
+                        <span class="desc">Validates input,<br />extracts metadata</span>
+                    </div>
+                    <div class="agent-card">
+                        <span class="emoji">🎙️</span>
+                        <span class="name">Transcription</span>
+                        <span class="desc">Whisper STT,<br />speaker labels</span>
+                    </div>
+                    <div class="agent-card">
+                        <span class="emoji">📝</span>
+                        <span class="name">Summarization</span>
+                        <span class="desc">Key points,<br />action items</span>
+                    </div>
+                    <div class="agent-card">
+                        <span class="emoji">📊</span>
+                        <span class="name">Quality Scorer</span>
+                        <span class="desc">5-dimension<br />rubric scoring</span>
+                    </div>
+                    <div class="agent-card">
+                        <span class="emoji">🔀</span>
+                        <span class="name">Routing</span>
+                        <span class="desc">Fallback logic,<br />error recovery</span>
+                    </div>
+                </div>
+                <table style="margin-top: 0.8em;">
+                    <tr>
+                        <th>Agent</th>
+                        <th>Input</th>
+                        <th>Output</th>
+                        <th>Tools</th>
+                    </tr>
+                    <tr>
+                        <td>📥 Intake</td>
+                        <td>Audio / JSON / Text</td>
+                        <td>Validated metadata</td>
+                        <td><span class="badge badge-blue">validate_audio</span></td>
+                    </tr>
+                    <tr>
+                        <td>🎙️ Transcription</td>
+                        <td>Audio file</td>
+                        <td>Timestamped transcript</td>
+                        <td><span class="badge badge-blue">transcribe_audio</span></td>
+                    </tr>
+                    <tr>
+                        <td>📝 Summarization</td>
+                        <td>Transcript</td>
+                        <td>Summary + action items</td>
+                        <td><span class="badge badge-blue">generate_summary</span></td>
+                    </tr>
+                    <tr>
+                        <td>📊 Quality Scorer</td>
+                        <td>Transcript</td>
+                        <td>Scores (1-10) × 5 dims</td>
+                        <td><span class="badge badge-blue">score_quality</span> <span
+                                class="badge badge-blue">detect_pii</span></td>
+                    </tr>
+                    <tr>
+                        <td>🔀 Routing</td>
+                        <td>All outputs</td>
+                        <td>Final report</td>
+                        <td><span class="badge badge-blue">fallback_provider</span></td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- Slide 6: Quality Scoring -->
+            <section>
+                <h2>Quality Scoring Engine</h2>
+                <p class="subtitle">5-Dimension AI-powered scoring with coaching recommendations</p>
+                <div class="two-col">
+                    <div class="col-box">
+                        <h3>📊 Scoring Dimensions</h3>
+                        <div class="score-bar">
+                            <span class="bar-label">Empathy</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="width: 80%;"></div>
+                            </div>
+                            <span class="bar-value">8/10</span>
+                        </div>
+                        <div class="score-bar">
+                            <span class="bar-label">Resolution</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="width: 70%;"></div>
+                            </div>
+                            <span class="bar-value">7/10</span>
+                        </div>
+                        <div class="score-bar">
+                            <span class="bar-label">Professionalism</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="width: 90%;"></div>
+                            </div>
+                            <span class="bar-value">9/10</span>
+                        </div>
+                        <div class="score-bar">
+                            <span class="bar-label">Compliance</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="width: 80%;"></div>
+                            </div>
+                            <span class="bar-value">8/10</span>
+                        </div>
+                        <div class="score-bar">
+                            <span class="bar-label">Efficiency</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="width: 70%;"></div>
+                            </div>
+                            <span class="bar-value">7/10</span>
+                        </div>
+                    </div>
+                    <div class="col-box">
+                        <h3>🎯 Score Bands</h3>
+                        <table>
+                            <tr>
+                                <td>🟢</td>
+                                <td>8.0 – 10.0</td>
+                                <td>Excellent</td>
+                            </tr>
+                            <tr>
+                                <td>🟡</td>
+                                <td>6.0 – 7.9</td>
+                                <td>Good</td>
+                            </tr>
+                            <tr>
+                                <td>🟠</td>
+                                <td>4.0 – 5.9</td>
+                                <td>Needs Work</td>
+                            </tr>
+                            <tr>
+                                <td>🔴</td>
+                                <td>0.0 – 3.9</td>
+                                <td>Critical</td>
+                            </tr>
+                        </table>
+                        <h3 style="margin-top: 0.6em;">⚡ Structured Output</h3>
+                        <p style="font-size: 0.6em; color: #94a3b8;">Pydantic models + GPT-4 function calling for
+                            reliable, typed scoring output</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: MCP Tools -->
+            <section>
+                <h2>MCP Tool Integration</h2>
+                <p class="subtitle">7 standardized tools via Model Context Protocol</p>
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Tool</th>
+                        <th>Category</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><code>transcribe_audio</code></td>
+                        <td><span class="badge badge-purple">Audio</span></td>
+                        <td>Whisper STT with timestamps</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><code>generate_summary</code></td>
+                        <td><span class="badge">Analysis</span></td>
+                        <td>Structured call summary</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><code>score_quality</code></td>
+                        <td><span class="badge badge-orange">QA</span></td>
+                        <td>5-dimension quality rubric</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><code>detect_pii</code></td>
+                        <td><span class="badge badge-red">Security</span></td>
+                        <td>PII detection & redaction</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><code>analyze_sentiment</code></td>
+                        <td><span class="badge">Analysis</span></td>
+                        <td>Sentiment trajectory</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><code>extract_action_items</code></td>
+                        <td><span class="badge">Analysis</span></td>
+                        <td>Follow-up task extraction</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><code>check_compliance</code></td>
+                        <td><span class="badge badge-red">Security</span></td>
+                        <td>Script adherence check</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- Slide 8: LangGraph Orchestration -->
+            <section>
+                <h2>LangGraph Orchestration</h2>
+                <p class="subtitle">State machine with conditional routing and parallel execution</p>
+                <div class="pipeline-flow" style="flex-direction: column; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="pipeline-step" style="border-color: var(--accent);">
+                            <span class="emoji">📁</span>
+                            <span class="label">Receive Input</span>
+                        </div>
+                        <span class="pipeline-arrow">→</span>
+                        <div class="pipeline-step">
+                            <span class="emoji">📥</span>
+                            <span class="label">Intake Validate</span>
+                        </div>
+                        <span class="pipeline-arrow">→</span>
+                        <div class="pipeline-step">
+                            <span class="emoji">🔀</span>
+                            <span class="label">Route by Type</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="pipeline-step" style="border-color: var(--orange);">
+                            <span class="emoji">🎙️</span>
+                            <span class="label">Transcribe (Audio)</span>
+                        </div>
+                        <span class="pipeline-arrow">→</span>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <div class="pipeline-step" style="border-color: var(--green);">
+                                <span class="emoji">📝</span>
+                                <span class="label">Summarize ∥</span>
+                            </div>
+                            <div class="pipeline-step" style="border-color: var(--green);">
+                                <span class="emoji">📊</span>
+                                <span class="label">Score Quality ∥</span>
+                            </div>
+                        </div>
+                        <span class="pipeline-arrow">→</span>
+                        <div class="pipeline-step" style="border-color: var(--purple);">
+                            <span class="emoji">📋</span>
+                            <span class="label">Report</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 1em;">
+                    <div style="font-size: 0.6em;">
+                        <span class="badge">Sequential</span> Intake → Transcribe
+                    </div>
+                    <div style="font-size: 0.6em;">
+                        <span class="badge badge-orange">Parallel</span> Summary ∥ Scoring
+                    </div>
+                    <div style="font-size: 0.6em;">
+                        <span class="badge badge-purple">Conditional</span> Skip transcribe for text
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: Tech Stack -->
+            <section>
+                <h2>Technology Stack</h2>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <span class="tech-label">Multi-Agent</span>
+                        <span class="tech-name">LangGraph</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">LLMs</span>
+                        <span class="tech-name">Gemini 2.0 Flash / GPT-4o / Claude</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Transcription</span>
+                        <span class="tech-name">Whisper API</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Structured Output</span>
+                        <span class="tech-name">Pydantic v2</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Backend</span>
+                        <span class="tech-name">FastAPI</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Frontend</span>
+                        <span class="tech-name">Streamlit</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Database</span>
+                        <span class="tech-name">SQLite + ChromaDB</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Observability</span>
+                        <span class="tech-name">Arize Phoenix</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Evaluation</span>
+                        <span class="tech-name">DeepEval</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Tools Protocol</span>
+                        <span class="tech-name">MCP (7 tools)</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Deployment</span>
+                        <span class="tech-name">Docker + GCR</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Testing</span>
+                        <span class="tech-name">pytest + DeepEval</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 10: UI / UX -->
+            <section>
+                <h2>UI / UX Design</h2>
+                <p class="subtitle">5-tab Streamlit interface — supervisor-first design</p>
+                <div class="two-col">
+                    <div class="col-box">
+                        <h3>📊 Dashboard View</h3>
+                        <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                            <div class="metric-card" style="padding: 10px;">
+                                <span class="value" style="font-size: 1.2em;">47</span>
+                                <span class="label">Calls Today</span>
+                            </div>
+                            <div class="metric-card" style="padding: 10px;">
+                                <span class="value" style="font-size: 1.2em;">7.6</span>
+                                <span class="label">Avg QA Score</span>
+                            </div>
+                            <div class="metric-card" style="padding: 10px;">
+                                <span class="value" style="font-size: 1.2em;">4:32</span>
+                                <span class="label">Avg Handle Time</span>
+                            </div>
+                            <div class="metric-card" style="padding: 10px;">
+                                <span class="value" style="font-size: 1.2em;">89%</span>
+                                <span class="label">Resolved Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-box">
+                        <h3>🎙️ Analyze View</h3>
+                        <ul style="font-size: 0.65em; padding-left: 1em;">
+                            <li>Drag & drop audio/transcript upload</li>
+                            <li>Real-time processing indicators</li>
+                            <li>Summary + scores side-by-side</li>
+                            <li>Transcript viewer with timestamps</li>
+                            <li>Action items + recommendations</li>
+                            <li>PII flags & compliance alerts</li>
+                        </ul>
+                        <p style="font-size: 0.55em; color: var(--accent-light); margin-top: 0.5em;">
+                            ✅ Responsive: Mobile / Tablet / Desktop
+                        </p>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 0.8em;">
+                    <span class="badge badge-blue">📊 Dashboard</span>
+                    <span class="badge badge-blue">🎙️ Analyze</span>
+                    <span class="badge badge-blue">📋 History</span>
+                    <span class="badge badge-blue">📈 Trends</span>
+                    <span class="badge badge-blue">⚙️ Settings</span>
+                </div>
+            </section>
+
+            <!-- Slide 11: Routing & Fallback -->
+            <section>
+                <h2>Routing & Fallback Strategy</h2>
+                <p class="subtitle">Graceful degradation across all pipeline stages</p>
+                <table>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Primary</th>
+                        <th>Fallback</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>Transcription fails</td>
+                        <td>Whisper API</td>
+                        <td>Deepgram</td>
+                        <td><span class="badge badge-orange">Auto-retry alt provider</span></td>
+                    </tr>
+                    <tr>
+                        <td>Summary timeout</td>
+                        <td>Gemini 2.0 Flash</td>
+                        <td>Claude 3.5</td>
+                        <td><span class="badge badge-orange">Switch provider</span></td>
+                    </tr>
+                    <tr>
+                        <td>Scoring error</td>
+                        <td>GPT-4o</td>
+                        <td>Gemini Flash</td>
+                        <td><span class="badge badge-orange">Simplified rubric</span></td>
+                    </tr>
+                    <tr>
+                        <td>All LLMs down</td>
+                        <td>Cloud LLMs</td>
+                        <td>—</td>
+                        <td><span class="badge badge-red">Return raw transcript</span></td>
+                    </tr>
+                    <tr>
+                        <td>Invalid audio</td>
+                        <td>Auto-detect</td>
+                        <td>Manual input</td>
+                        <td><span class="badge">Prompt text upload</span></td>
+                    </tr>
+                </table>
+                <blockquote style="margin-top: 0.8em; font-size: 0.75em;">
+                    ⏱️ Max 3 retries per stage with exponential backoff<br>
+                    📊 All failures logged to Arize Phoenix for monitoring
+                </blockquote>
+            </section>
+
+            <!-- Slide 12: Observability & Eval -->
+            <section>
+                <h2>Observability & Evaluation</h2>
+                <div class="two-col">
+                    <div class="col-box">
+                        <h3>📊 Arize Phoenix Tracing</h3>
+                        <table>
+                            <tr>
+                                <td>Transcription</td>
+                                <td><span class="badge">&lt; 30s</span></td>
+                            </tr>
+                            <tr>
+                                <td>Summarization</td>
+                                <td><span class="badge">&lt; 10s</span></td>
+                            </tr>
+                            <tr>
+                                <td>Quality Scoring</td>
+                                <td><span class="badge">&lt; 8s</span></td>
+                            </tr>
+                            <tr>
+                                <td>End-to-End</td>
+                                <td><span class="badge">&lt; 60s</span></td>
+                            </tr>
+                            <tr>
+                                <td>Error Rate</td>
+                                <td><span class="badge">&lt; 2%</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-box">
+                        <h3>🧪 DeepEval Metrics</h3>
+                        <table>
+                            <tr>
+                                <td>Answer Relevancy</td>
+                                <td><span class="badge">&gt; 0.85</span></td>
+                            </tr>
+                            <tr>
+                                <td>Faithfulness</td>
+                                <td><span class="badge">&gt; 0.90</span></td>
+                            </tr>
+                            <tr>
+                                <td>Hallucination</td>
+                                <td><span class="badge badge-red">&lt; 0.10</span></td>
+                            </tr>
+                            <tr>
+                                <td>Bias</td>
+                                <td><span class="badge badge-red">&lt; 0.05</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 13: Demo Flow -->
+            <section>
+                <h2>Demo Flow</h2>
+                <p class="subtitle">End-to-end: Audio → Summary + QA Score</p>
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 0.8em;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="badge badge-blue" style="font-size: 0.8em; padding: 6px 14px;">Step 1</span>
+                        <span style="font-size: 0.75em;">Upload sample call recording
+                            <code>order_delay_inquiry.wav</code></span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="badge badge-blue" style="font-size: 0.8em; padding: 6px 14px;">Step 2</span>
+                        <span style="font-size: 0.75em;">Watch <span class="highlight">Intake Agent</span> validate &
+                            extract metadata (format, duration)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="badge badge-blue" style="font-size: 0.8em; padding: 6px 14px;">Step 3</span>
+                        <span style="font-size: 0.75em;">Watch <span class="highlight">Transcription Agent</span>
+                            produce speaker-labeled transcript</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="badge badge-blue" style="font-size: 0.8em; padding: 6px 14px;">Step 4</span>
+                        <span style="font-size: 0.75em;">Watch <span class="highlight">parallel</span> Summary +
+                            Quality Scoring execute simultaneously</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="badge badge-blue" style="font-size: 0.8em; padding: 6px 14px;">Step 5</span>
+                        <span style="font-size: 0.75em;">View final report: summary, 5-dimension scores, action items,
+                            PII flags</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="badge badge-blue" style="font-size: 0.8em; padding: 6px 14px;">Step 6</span>
+                        <span style="font-size: 0.75em;">Show <span class="highlight">fallback</span> by simulating
+                            model timeout → auto-switch provider</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 14: Roadmap -->
+            <section>
+                <h2>Development Roadmap</h2>
+                <p class="subtitle">7-day sprint to submission</p>
+                <div class="gantt-phases">
+                    <div class="gantt-row">
+                        <span class="gantt-label">Phase 1: Core Pipeline</span>
+                        <div class="gantt-bar"
+                            style="width: 28%; background: linear-gradient(90deg, var(--accent), #0891b2);">
+                            Days 1-2
+                        </div>
+                    </div>
+                    <div class="gantt-row">
+                        <span class="gantt-label">Phase 2: UI/UX</span>
+                        <div class="gantt-bar"
+                            style="width: 28%; margin-left: 28%; background: linear-gradient(90deg, var(--purple), #7c3aed);">
+                            Days 3-4
+                        </div>
+                    </div>
+                    <div class="gantt-row">
+                        <span class="gantt-label">Phase 3: Features</span>
+                        <div class="gantt-bar"
+                            style="width: 28%; margin-left: 42%; background: linear-gradient(90deg, var(--green), #16a34a);">
+                            Days 4-5
+                        </div>
+                    </div>
+                    <div class="gantt-row">
+                        <span class="gantt-label">Phase 4: Polish</span>
+                        <div class="gantt-bar"
+                            style="width: 28%; margin-left: 57%; background: linear-gradient(90deg, var(--orange), #d97706);">
+                            Days 5-6
+                        </div>
+                    </div>
+                    <div class="gantt-row">
+                        <span class="gantt-label">Phase 5: Deploy</span>
+                        <div class="gantt-bar"
+                            style="width: 28%; margin-left: 71%; background: linear-gradient(90deg, var(--red), #dc2626);">
+                            Days 6-7
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-list" style="margin-top: 0.8em;">
+                    <div class="feature-item"><span class="check">✅</span> 5 Specialized Agents</div>
+                    <div class="feature-item"><span class="check">✅</span> LangGraph Orchestration</div>
+                    <div class="feature-item"><span class="check">✅</span> 7 MCP Tools</div>
+                    <div class="feature-item"><span class="check">✅</span> Multi-LLM Support</div>
+                    <div class="feature-item"><span class="check">✅</span> Streamlit UI (5 tabs)</div>
+                    <div class="feature-item"><span class="check">✅</span> Whisper Transcription</div>
+                    <div class="feature-item"><span class="check">✅</span> Quality Scoring (5-dim)</div>
+                    <div class="feature-item"><span class="check">✅</span> PII Detection</div>
+                    <div class="feature-item"><span class="check">✅</span> Arize Phoenix Observability</div>
+                    <div class="feature-item"><span class="check">✅</span> DeepEval Evaluation</div>
+                    <div class="feature-item"><span class="check">✅</span> Docker + Cloud Run</div>
+                    <div class="feature-item"><span class="check">✅</span> Responsive Design</div>
+                </div>
+            </section>
+
+            <!-- Slide 15: Rubric Alignment -->
+            <section>
+                <h2>Rubric Alignment</h2>
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Weight</th>
+                        <th>How We Score</th>
+                        <th>Target</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Functionality</strong></td>
+                        <td>35%</td>
+                        <td>Working call→summary pipeline, accurate scoring</td>
+                        <td><span class="badge">95%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agent Design</strong></td>
+                        <td>25%</td>
+                        <td>5 modular agents, LangGraph, clear routing</td>
+                        <td><span class="badge">95%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Experience</strong></td>
+                        <td>15%</td>
+                        <td>Streamlit 5-tab UI, responsive, dark mode</td>
+                        <td><span class="badge">90%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Routing & Fallback</strong></td>
+                        <td>15%</td>
+                        <td>Multi-LLM fallback, error recovery, degradation</td>
+                        <td><span class="badge">90%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Documentation</strong></td>
+                        <td>10%</td>
+                        <td>SPEC_DEV.md, ROADMAP.md, ARCHITECTURE.md</td>
+                        <td><span class="badge">95%</span></td>
+                    </tr>
+                </table>
+                <blockquote style="margin-top: 1em; font-size: 0.8em;">
+                    🎯 <strong>Target Overall Score: 93/100</strong>
+                </blockquote>
+            </section>
+
+            <!-- Slide 16: Thank You -->
+            <section>
+                <p class="emoji-title">📞</p>
+                <h1>Clarity CX</h1>
+                <p class="subtitle">AI-Powered Call Center Intelligence</p>
+                <p style="margin-top: 1.5em; font-size: 0.8em;">
+                    <span class="badge">5 Agents</span>
+                    <span class="badge badge-blue">7 MCP Tools</span>
+                    <span class="badge badge-purple">LangGraph</span>
+                    <span class="badge badge-orange">Multi-LLM</span>
+                </p>
+                <p style="margin-top: 2em; font-size: 0.7em; color: #64748b;">
+                    Thank you! Questions?
+                </p>
+                <p class="small">
+                    📝 SPEC_DEV.md · 🗺️ ROADMAP.md · 🏗️ ARCHITECTURE.md
+                </p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            controlsTutorial: false,
+            progress: true,
+            center: true,
+            width: 1280,
+            height: 720,
+        });
+    </script>
+</body>
+
+</html>

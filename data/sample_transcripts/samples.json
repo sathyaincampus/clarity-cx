@@ -1,0 +1,1382 @@
+[
+    {
+        "call_id": "SAMPLE-001",
+        "scenario": "Order Delay Inquiry",
+        "expected_score": 8.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:05",
+                "text": "Thank you for calling Acme Support, my name is Sarah. How may I help you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:12",
+                "text": "Hi Sarah, I placed an order last week and it still hasn't arrived. I'm getting really frustrated because I need it for an event this weekend."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:22",
+                "text": "I completely understand your frustration, and I'm sorry for the inconvenience. Let me look into this right away. Could you please provide me with your order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:30",
+                "text": "Sure, it's ORD-5678."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:35",
+                "text": "Thank you. I can see order ORD-5678 here. It looks like there was a delay at the carrier's distribution center due to weather conditions in your area. I sincerely apologize for this."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:48",
+                "text": "Weather? But it's been fine here all week!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:53",
+                "text": "I understand that's frustrating to hear. The delay was at the regional hub, not necessarily in your immediate area. What I'd like to do is ship a replacement order with expedited next-day delivery at no extra cost. Would that work for you?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:05",
+                "text": "Yes, that would be great actually. Will I get a new tracking number?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:10",
+                "text": "Absolutely! I'm processing the replacement right now. You'll receive a new tracking number via email within the next hour. The package should arrive by tomorrow evening."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:22",
+                "text": "Perfect, thank you so much Sarah. I really appreciate you taking care of this so quickly."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:28",
+                "text": "You're very welcome! Is there anything else I can help you with today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:33",
+                "text": "No, that's all. Thank you!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:36",
+                "text": "Thank you for calling Acme Support. Have a great day!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-002",
+        "scenario": "Billing Dispute",
+        "expected_score": 5.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:03",
+                "text": "Acme Support, how can I help?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:07",
+                "text": "I've been charged twice for my subscription this month! This is the third time this has happened!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:15",
+                "text": "Let me check your account. What's your email?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:19",
+                "text": "It's john.smith@email.com. And I want this fixed permanently!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:28",
+                "text": "I see the two charges. Yeah, that shouldn't have happened. I'll submit a refund request."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:35",
+                "text": "A request? Last time they said the same thing and it took three weeks! I want it fixed NOW."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:43",
+                "text": "I understand. The refund process typically takes 5-7 business days. There's not much I can do to speed it up."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:52",
+                "text": "That's unacceptable. I want to speak to a supervisor."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:57",
+                "text": "I can transfer you, but they'll tell you the same thing. Hold on."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:05",
+                "text": "Fine. Just transfer me."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:08",
+                "text": "Transferring you now. Goodbye."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-003",
+        "scenario": "Technical Support",
+        "expected_score": 7.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:05",
+                "text": "Thank you for calling Acme Tech Support, this is Mike. How can I assist you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:12",
+                "text": "Hi Mike, my internet router keeps disconnecting every few hours. I've tried restarting it but it keeps happening."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:20",
+                "text": "I'm sorry to hear that. Let's troubleshoot this together. First, how long has this been happening?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:27",
+                "text": "About three days now. It started after the last firmware update."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:33",
+                "text": "That's very helpful information. The recent firmware update has been causing issues for some users. Let me walk you through a fix. Can you access your router's admin panel at 192.168.1.1?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:45",
+                "text": "Yes, I'm there now."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:48",
+                "text": "Great. Go to Settings, then Advanced, then Firmware. You should see an option to roll back to the previous version. Click on that."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:05",
+                "text": "Okay, I see it. It says it will take about 5 minutes to complete. Should I do it now?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:12",
+                "text": "Yes, go ahead. Your internet will disconnect briefly during the process. Once it's done, the router will restart automatically and your connection should be stable again."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:25",
+                "text": "Alright, I've started the rollback. Thanks for the help, Mike."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:30",
+                "text": "You're welcome! If the issue persists after the rollback, please call us back and we can schedule a technician visit. Is there anything else I can help with?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:40",
+                "text": "No, that should do it. Thanks!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:43",
+                "text": "Thank you for calling Acme Tech Support. Have a great day!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-004",
+        "scenario": "Account Cancellation",
+        "expected_score": 7.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:05",
+                "text": "Thank you for calling Acme Services, my name is Lisa. How may I help you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:12",
+                "text": "I'd like to cancel my subscription. I just don't use it enough to justify the cost."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:19",
+                "text": "I understand, and I appreciate you letting us know. Before we proceed, may I ask what aspects of the service haven't been meeting your expectations? We may have options that could better fit your needs."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:30",
+                "text": "Honestly, the premium features are great, but I only use the basic ones. The $29.99 a month feels too much."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:40",
+                "text": "I hear you completely. Actually, we recently introduced a Basic plan at $9.99 per month that includes all the core features you're using. It might be a better fit. Would you like me to switch you to that instead?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:55",
+                "text": "Oh, I didn't know about that! What's included in the Basic plan?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:00",
+                "text": "The Basic plan includes unlimited access to core features, 5GB storage, and email support. You'd lose the premium analytics and priority support, but based on your usage, those features haven't been active on your account."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:15",
+                "text": "That actually sounds perfect. Let's do the downgrade instead of cancelling."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:20",
+                "text": "Wonderful! I've switched your plan to Basic starting next billing cycle. You'll see the $9.99 charge instead of $29.99. Is there anything else I can help with?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:32",
+                "text": "No, that's great. Thank you Lisa!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:35",
+                "text": "Thank you for staying with us! Have a wonderful day!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-005",
+        "scenario": "Complaint Escalation",
+        "expected_score": 3.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:03",
+                "text": "Support line, what do you need?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:08",
+                "text": "I received a damaged product and I've been trying to get a replacement for two weeks! No one has helped me!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:18",
+                "text": "Okay, do you have your order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:22",
+                "text": "Yes, it's ORD-9999. I've called four times already!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:28",
+                "text": "I see the notes here. Looks like the previous agents already submitted requests."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:35",
+                "text": "Submitted requests that went nowhere! I paid $200 for this product and I'm looking at a broken mess!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:42",
+                "text": "Well, there's a process we have to follow. I can't just send you a new one without approval."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:50",
+                "text": "This is ridiculous. I want to speak to your manager immediately."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:55",
+                "text": "My manager is on break. You'll have to call back later."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:02",
+                "text": "On break!? I've been waiting for two weeks and your manager is on break? This is the worst customer service I've ever experienced!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:12",
+                "text": "I'm sorry you feel that way. Is there anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:17",
+                "text": "Yes, I'm going to file a complaint with the Better Business Bureau. This is completely unacceptable."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:25",
+                "text": "That's your right. Have a good day."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-006",
+        "scenario": "Upgrade Inquiry",
+        "expected_score": 9.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:05",
+                "text": "Thank you for calling Acme Premium Services, my name is Jessica. How may I help you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:12",
+                "text": "Hi Jessica! I've been on the Standard plan for about a year now and I'm thinking about upgrading to Premium. Can you tell me what's included?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:22",
+                "text": "Of course! I'd be happy to walk you through our Premium plan. First, thank you for being a loyal Standard member for a year — that's wonderful! The Premium plan includes everything you currently have, plus unlimited storage, priority 24/7 support, advanced analytics, and our new AI-powered features."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:40",
+                "text": "That sounds great. What's the price difference?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:44",
+                "text": "The Premium plan is $49.99 per month compared to your current $19.99. However, because you've been a loyal member for over a year, I can offer you a special loyalty discount of 20% for the first six months, bringing it down to $39.99 per month."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:58",
+                "text": "Oh wow, that's generous! And the AI features — do those work with my existing data?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:05",
+                "text": "Absolutely! When you upgrade, all your existing data seamlessly transitions. The AI features will start analyzing your historical data immediately, so you'll see insights from day one. We also provide a 30-day money-back guarantee if you find the Premium plan isn't right for you."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:22",
+                "text": "I love it. Let's do the upgrade with the loyalty discount!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:27",
+                "text": "Excellent choice! I've applied the upgrade with your 20% loyalty discount. You'll see the new features available within the next few minutes. I'll also send you a welcome email with tips to get the most out of your Premium subscription. Is there anything else I can help you with?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:42",
+                "text": "No, you've been incredibly helpful Jessica. Thank you!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:46",
+                "text": "It's my pleasure! Welcome to Premium, and thank you for your loyalty. Have an amazing day!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-007",
+        "scenario": "Package Lost in Transit",
+        "expected_score": 7.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:04",
+                "text": "Thank you for calling ShopEase customer service, my name is David. How can I help you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:11",
+                "text": "Hi David, I ordered a laptop bag two weeks ago and the tracking says it was delivered, but I never received it."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:20",
+                "text": "I'm really sorry to hear that. That must be very frustrating. Let me pull up your order right away. Could you give me your order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:28",
+                "text": "It's ORD-20261. I've checked with my neighbors and building reception too, no one has it."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:37",
+                "text": "I appreciate you checking. I can see the carrier marked it as delivered to your front door on February 15th. Since the package appears to be lost, I have two options for you: I can either reship the item with signature-required delivery, or process a full refund. Which would you prefer?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:52",
+                "text": "I still need the bag, so a reship would be great. But can you make sure someone signs for it this time?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:59",
+                "text": "Absolutely! I'm setting up a reshipment right now with signature confirmation. You'll receive the new tracking number within two hours via email. Expected delivery is three to five business days."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:10",
+                "text": "Perfect, thank you David."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:13",
+                "text": "You're welcome! I've also flagged this delivery address in our system so future orders will default to signature required. Is there anything else I can help with?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:22",
+                "text": "No, that's everything. Thanks for being so helpful!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:26",
+                "text": "Happy to help! Have a wonderful day."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-008",
+        "scenario": "Wrong Item Received",
+        "expected_score": 8.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:03",
+                "text": "Thank you for calling ShopEase, this is Rachel. How may I assist you?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:09",
+                "text": "Hi Rachel, I ordered a pair of blue running shoes size 10, but I received red hiking boots size 8. This is completely wrong!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:19",
+                "text": "Oh no, I sincerely apologize for that mix-up! That's definitely not the experience we want you to have. Let me fix this immediately. Can I get your order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:28",
+                "text": "ORD-20345."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:33",
+                "text": "Thank you. I can see the order here. You're right — blue running shoes, size 10. I'm going to do three things for you right now. First, I'll ship the correct item with express delivery at no charge. Second, I'll email you a prepaid return label for the wrong item. And third, I'd like to apply a 15% discount to this order for the inconvenience."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:55",
+                "text": "Wow, that's really generous. I was expecting a hassle honestly."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:01",
+                "text": "Not at all! This was our mistake and you shouldn't have to deal with any hassle. The correct shoes will arrive within two business days. You can drop off the wrong item at any carrier location using the prepaid label — no rush on that, you have 30 days."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:15",
+                "text": "That's great. Thank you so much Rachel, this was way easier than I expected."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:20",
+                "text": "I'm glad I could help! We really appreciate your patience. Is there anything else I can do for you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:27",
+                "text": "Nope, all good. Have a great day!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:30",
+                "text": "You too! Thank you for choosing ShopEase."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-009",
+        "scenario": "Coupon Code Not Working",
+        "expected_score": 6.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:04",
+                "text": "ShopEase support, this is Kevin. What can I do for you?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:09",
+                "text": "I have a 25% off coupon code from your email newsletter but it's not working at checkout. The code is SAVE25."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:18",
+                "text": "Let me check that code for you. One moment... I see, the SAVE25 code expired yesterday actually."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:27",
+                "text": "What? The email didn't say anything about an expiration date! I've been saving this for the right purchase."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:34",
+                "text": "I understand that's frustrating. The terms were in the fine print of the email. But let me see what I can do. What items are in your cart?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:43",
+                "text": "A wireless keyboard and a mouse pad. Total comes to about $85."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:50",
+                "text": "I can generate a one-time 20% discount code for you since the original wasn't clear about the expiry. It won't be the full 25%, but it's the best I can do."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:00",
+                "text": "I guess that works. What's the code?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:04",
+                "text": "The code is LOYALTY20. It's valid for the next 48 hours. Go ahead and try it."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:15",
+                "text": "Okay, it worked. Thanks I guess."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:19",
+                "text": "You're welcome. Anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:22",
+                "text": "No, that's it."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:24",
+                "text": "Alright, have a good day."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-010",
+        "scenario": "Size Exchange Request",
+        "expected_score": 9.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:05",
+                "text": "Good afternoon! Thank you for calling ShopEase Fashion, my name is Amanda. How can I make your day better?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:13",
+                "text": "Hi Amanda! I just received a dress I ordered for my daughter's wedding, and it's beautiful but it's slightly too large. I ordered a size 8 but I think I need a 6."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:24",
+                "text": "How exciting — congratulations on your daughter's wedding! I'd love to help you get the perfect fit. Let me look up your order. What's the order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:33",
+                "text": "Thank you! It's ORD-20512."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:38",
+                "text": "I see it — the emerald green evening dress, lovely choice! Great news: the size 6 is in stock. I can ship the size 6 to you right away with free express delivery so you have it well before the wedding. When is the big day?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:52",
+                "text": "It's March 15th, so I have a couple of weeks."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:57",
+                "text": "Perfect, you'll have the new size by this Friday at the latest. I'll also include a prepaid return label in the package for the size 8. No need to make a separate trip — just repack it and drop it off anytime within 30 days. And I'll waive the exchange fee since we want you looking your best for the wedding!"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:14",
+                "text": "Amanda, you are an absolute star! This is the best customer service I've ever had."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:20",
+                "text": "That means so much, thank you! I've sent the confirmation to your email. Would you like me to help with anything else — accessories, shoes perhaps?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:30",
+                "text": "No, I'm all set. Thank you so much!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:33",
+                "text": "You're welcome! Have a wonderful time at the wedding. Goodbye!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-011",
+        "scenario": "Product Out of Stock Inquiry",
+        "expected_score": 7.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:04",
+                "text": "ShopEase Electronics, this is Tom. How can I help?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:09",
+                "text": "Hey Tom, I've been trying to buy the NoiseBlock Pro headphones for a week now and they keep showing out of stock online. Do you know when they'll be back?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:19",
+                "text": "Great question. The NoiseBlock Pro has been incredibly popular. Let me check our inventory system for the latest restock date."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:27",
+                "text": "I really need them before next month for a work trip."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:33",
+                "text": "I see here that we're expecting a new shipment by March 8th. I can set up a stock alert so you'll be notified by email and text the moment they're available. That way you'll be first in line."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:44",
+                "text": "That would be great. Is there a similar model I could grab in the meantime as a backup?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:51",
+                "text": "The QuietMax X2 is a comparable option at the same price point, and it's in stock right now. Similar noise cancellation, 30-hour battery life. Some customers actually prefer the fit. Would you like me to send you a comparison chart?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:03",
+                "text": "Yeah, send me the comparison. I'll take a look and decide."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:08",
+                "text": "Done! I've emailed the comparison and set up the restock alert for the NoiseBlock Pro. Anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:15",
+                "text": "That's it. Thanks Tom."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:18",
+                "text": "My pleasure. Have a great day!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-012",
+        "scenario": "Refund Taking Too Long",
+        "expected_score": 4.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:03",
+                "text": "ShopEase returns department, how can I help?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:08",
+                "text": "I returned a blender three weeks ago and I still haven't gotten my refund. The tracking shows it was delivered to your warehouse on February 5th."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:18",
+                "text": "Okay, let me check. What's the return ID?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:22",
+                "text": "RET-4421. I was told 7 to 10 business days and it's been way past that."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:30",
+                "text": "I see the return. It looks like the warehouse received it but it's still in the inspection queue."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:37",
+                "text": "Inspection queue? It's a blender I used twice! How long does it take to inspect?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:43",
+                "text": "Well, we've had a backlog since the holiday season. I can escalate it but I can't guarantee a specific timeline."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:52",
+                "text": "That's not acceptable. You promised 7 to 10 days and it's been 21. I need my $89 back."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:59",
+                "text": "I understand. Let me submit a priority escalation. You should see the refund within 3 to 5 more business days."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:07",
+                "text": "You're saying 3 to 5 more days on top of the 21 I've already waited? That's almost a month!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:14",
+                "text": "Yeah, I know it's frustrating. That's the best I can do from my end. The escalation team will process it."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:22",
+                "text": "Fine. I'll be calling back if it's not done by then."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:26",
+                "text": "Understood. Is there anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:29",
+                "text": "No."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:31",
+                "text": "Okay, goodbye."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-013",
+        "scenario": "Gift Card Balance Issue",
+        "expected_score": 8.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:04",
+                "text": "Thank you for calling ShopEase, this is Maria. How can I help you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:10",
+                "text": "Hi Maria, I received a $100 ShopEase gift card for my birthday. When I tried to use it, the site says the balance is only $25. I've never used it before."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:21",
+                "text": "Oh, that doesn't sound right at all. I'm sorry you're dealing with this. Let me investigate right away. Can you read me the gift card number from the back?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:30",
+                "text": "Sure, it's GC-7789-4532."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:37",
+                "text": "I'm looking at the transaction history on this card. It shows a $75 purchase made on February 10th that you didn't make. This may be a case of unauthorized use — sometimes gift card numbers get compromised before they're even activated."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:52",
+                "text": "That's terrible! So someone stole $75 from my birthday gift?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:58",
+                "text": "I completely understand how upsetting that is. Here's what I'm going to do: I'll deactivate this compromised card immediately and issue you a brand new digital gift card for the full $100, sent straight to your email. You'll have it within five minutes."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:10",
+                "text": "Oh wow, the full $100? That's amazing, thank you!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:15",
+                "text": "Of course! It's not your fault the card was compromised. I've also reported the fraudulent transaction to our security team. Can I confirm your email address to send the new card?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:25",
+                "text": "It's sarah.m@email.com. Thank you so much Maria, you really turned a bad situation around."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:33",
+                "text": "Happy to help, and happy belated birthday! Is there anything else I can do for you?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:39",
+                "text": "No, that's perfect. Have a great day!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:42",
+                "text": "You too! Enjoy your shopping. Goodbye!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-014",
+        "scenario": "Delivery Address Change",
+        "expected_score": 8.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:04",
+                "text": "ShopEase customer care, this is James. How may I help you?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:09",
+                "text": "Hi James, I just placed an order about 30 minutes ago and realized I put in my old address. Is it too late to change it?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:17",
+                "text": "Let me check the status right away! If it hasn't been picked and packed yet, we should be able to update it. What's your order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:24",
+                "text": "ORD-20678."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:29",
+                "text": "Good news! The order is still in processing and hasn't gone to the warehouse yet. I can absolutely update the address. What's the new delivery address?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:38",
+                "text": "742 Maple Drive, Apartment 3B, Austin, Texas, 78702."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:47",
+                "text": "Got it — 742 Maple Drive, Apartment 3B, Austin, TX 78702. I've updated the address. Everything else on the order stays the same. You'll get a confirmation email shortly."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:57",
+                "text": "And the delivery date won't change?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:01",
+                "text": "No change at all! Still estimated for delivery on Monday. Also, would you like me to update your default address on your account so this doesn't happen again?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:10",
+                "text": "Yes, that would be great actually. Thank you James!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:14",
+                "text": "Done! Default address updated. Is there anything else I can help with?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:19",
+                "text": "No, you've been super helpful. Thanks!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:22",
+                "text": "My pleasure! Have a great weekend."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-015",
+        "scenario": "Damaged Item - Aggressive Agent",
+        "expected_score": 3.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:02",
+                "text": "ShopEase, what's your issue?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:07",
+                "text": "I received a ceramic vase I ordered and it arrived completely shattered. I need a replacement or a refund."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:15",
+                "text": "Did you take pictures? We need photographic evidence before we can do anything."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:21",
+                "text": "Yes, I have photos. But shouldn't fragile items be packed better? There was barely any cushioning in the box."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:29",
+                "text": "Look, things break during shipping sometimes. That's between you and the carrier. You should have bought shipping insurance."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:37",
+                "text": "Excuse me? I paid $120 for this vase. It's your responsibility to pack it properly!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:44",
+                "text": "Fine, email the photos to returns@shopease.com and someone will review it within 10 business days."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:52",
+                "text": "10 business days?! That's two weeks! This was a gift for my mother! Can't you do anything faster?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:59",
+                "text": "That's the standard process. I don't make the rules."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:05",
+                "text": "This is absolutely terrible service. I want to speak to a manager."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:10",
+                "text": "Managers don't take calls on weekends. You can call back Monday."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:16",
+                "text": "I'm never shopping here again. This is the worst experience I've ever had."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:22",
+                "text": "That's your choice. Anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:25",
+                "text": "No. Goodbye."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:27",
+                "text": "Bye."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-016",
+        "scenario": "Price Match Request",
+        "expected_score": 7.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:04",
+                "text": "Thank you for calling ShopEase, this is Nina. How can I help you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:10",
+                "text": "Hi Nina, I bought a coffee maker from you guys three days ago for $149, and today I see the exact same model on a competitor's site for $119. Do you do price matching?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:22",
+                "text": "That's a great question! Yes, we do have a price match policy within 14 days of purchase. Let me verify a few things. Can you give me the order number and share the competitor listing?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:33",
+                "text": "Order is ORD-20890. And the competitor is TechBargains.com — I can send you the link."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:41",
+                "text": "I pulled up TechBargains and I can see the same model at $119. Since it's within our 14-day window and it's an authorized retailer, I can absolutely apply the price match. I'll refund the $30 difference back to your original payment method."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:55",
+                "text": "That simple? No hoops to jump through?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:59",
+                "text": "That simple! The $30 refund will appear on your statement within 3 to 5 business days. I do want to mention that our price includes a 2-year warranty while the competitor offers only 1 year, so you're still getting extra value."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:10",
+                "text": "Good to know! Thanks Nina, this was really easy."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:14",
+                "text": "Of course! We want to make sure you always get the best deal with us. Is there anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:20",
+                "text": "Nope, all good. Thanks!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:23",
+                "text": "Happy to help! Have a wonderful day."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-017",
+        "scenario": "Order Tracking Confusion",
+        "expected_score": 6.5,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:03",
+                "text": "ShopEase shipping support, this is Brian."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:07",
+                "text": "Hi Brian, I ordered three items and got three different tracking numbers. One says delivered, one says in transit, and one says label created. I'm confused about what's going on."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:18",
+                "text": "That's because each item ships from a different warehouse. Let me look up your order. Order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:24",
+                "text": "ORD-21023. Why can't you ship them together?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:30",
+                "text": "Our items are stocked across regional warehouses for faster delivery. Combining them would actually delay the ones that are closest to you. Let me break it down: your phone case was delivered today, the screen protector is in transit and arriving tomorrow, and the charger label was just created — should ship tonight."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:48",
+                "text": "Okay, that makes more sense when you explain it. But the app just shows all three tracking numbers with no context. It's really confusing."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:57",
+                "text": "Fair point. I'll log that as feedback for our app team. In the meantime, I've sent you an email with all three tracking links organized by item name so it's easier to follow."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:07",
+                "text": "That helps. Thanks Brian."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:10",
+                "text": "No problem. Anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:13",
+                "text": "No, that's all."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:15",
+                "text": "Alright, have a good one."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-018",
+        "scenario": "Loyalty Rewards Dispute",
+        "expected_score": 8.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:05",
+                "text": "Thank you for calling ShopEase Rewards, this is Priya. How can I help you today?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:12",
+                "text": "Hi Priya, I placed a big order last month — over $300 — and I was supposed to earn triple points during your holiday promotion. But my account only shows regular points."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:24",
+                "text": "I totally understand your concern. That holiday triple points promotion was really popular. Let me look into your account and the order details. What's the order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:33",
+                "text": "ORD-19876."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:40",
+                "text": "I found it. I can see the order was placed on December 22nd, which was within the triple points window. It looks like the multiplier wasn't applied correctly — a system glitch during the holiday rush. You earned 320 base points but should have received 960. Let me fix that right now."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:58",
+                "text": "So I'm missing 640 points? That's a significant amount!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:03",
+                "text": "You're absolutely right, and I apologize for the error. I've just added the 640 missing points to your account. Your new balance is 2,340 points, which puts you just 160 points away from Gold status! Would you like me to check if any of your other holiday orders were affected too?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:19",
+                "text": "Yes please! I made two other orders during that period."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:26",
+                "text": "I see them — ORD-19901 and ORD-19923. Both have the correct triple multiplier applied. So it was just the one order that was affected. Your points are all accurate now."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:38",
+                "text": "That's a relief. Thank you Priya, you were really thorough."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:43",
+                "text": "My pleasure! And keep an eye out — with just one more purchase you'll hit Gold status and unlock free expedited shipping on every order. Is there anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:53",
+                "text": "No, I'm good. Thanks again!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:56",
+                "text": "Thank you for being a loyal ShopEase customer. Have a great day!"
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-019",
+        "scenario": "Flash Sale Item Cancellation",
+        "expected_score": 5.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:03",
+                "text": "ShopEase orders department, this is Carter."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:08",
+                "text": "Hi Carter, I need to cancel an order I placed during the flash sale this morning. Order ORD-21200."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:16",
+                "text": "Let me pull that up. I see ORD-21200 — a 65-inch TV for $399 from the flash sale. Unfortunately, flash sale items are marked as final sale, so cancellations aren't available."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:28",
+                "text": "What do you mean final sale? I didn't see that anywhere when I checked out! I ordered it by mistake — I meant to put it in my wishlist."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:38",
+                "text": "The terms are listed on the flash sale page. There's a banner that says all flash sale purchases are final. I understand it can be easy to miss."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:47",
+                "text": "So I'm stuck with a $399 TV I didn't actually want to buy right now?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:53",
+                "text": "Well, the order hasn't shipped yet. Let me talk to my supervisor to see if we can make an exception since it was placed less than an hour ago. Can you hold for a minute?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:01",
+                "text": "Yes, please."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:45",
+                "text": "Okay, I spoke with my supervisor. Since it was placed within the last hour, they've approved a cancellation as a one-time exception. However, the refund will be issued as store credit rather than back to your card. Is that acceptable?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:58",
+                "text": "I'd prefer a refund to my card, but I guess store credit is better than nothing. Fine, go ahead."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:02:05",
+                "text": "Understood. The order is cancelled and $399 in store credit has been added to your account. It never expires. Anything else?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:02:14",
+                "text": "No. Thank you for getting it cancelled at least."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:02:18",
+                "text": "Of course. Have a good day."
+            }
+        ]
+    },
+    {
+        "call_id": "SAMPLE-020",
+        "scenario": "Multi-Item Return with Partial Refund",
+        "expected_score": 7.0,
+        "transcript": [
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:04",
+                "text": "Thank you for calling ShopEase returns, this is Diana. How may I help?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:10",
+                "text": "Hi Diana, I placed an order for five items and I need to return three of them. But one of them I already removed the tags from. Is that going to be a problem?"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:21",
+                "text": "Thanks for letting me know upfront. Let me check your order. Order number?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:26",
+                "text": "ORD-21456."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:32",
+                "text": "I see the five items. Which three would you like to return?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:00:37",
+                "text": "The denim jacket, the striped scarf, and the leather belt. The belt is the one with no tags."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:00:45",
+                "text": "Okay, here's how it breaks down. The denim jacket and striped scarf are eligible for a full refund since they're unworn with tags — that's $89 plus $35. For the leather belt, since the tags have been removed, we can offer a partial refund of 80%, which would be $48 instead of the original $60. Total refund would be $172."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:05",
+                "text": "Why only 80% for the belt? I only tried it on, it's in perfect condition."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:12",
+                "text": "I understand. Our policy requires tags for a full refund because items without tags can't be resold as new. An 80% refund is actually the maximum we can offer for tag-removed items. Some retailers won't accept returns at all without tags."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:26",
+                "text": "I see, that makes sense I suppose. Alright, let's do it."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:31",
+                "text": "I've initiated the return for all three items. I'm emailing you a single prepaid label — you can pack all three in one box. The $172 refund will process within 5 to 7 business days after we receive the items. I've also included the return breakdown in the email for your records."
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:01:48",
+                "text": "Alright, thanks for explaining everything clearly Diana."
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:01:52",
+                "text": "Of course! Pro tip: keep the tags on until you're sure you're keeping an item — makes returns much smoother. Anything else I can help with?"
+            },
+            {
+                "speaker": "Customer",
+                "timestamp": "00:02:00",
+                "text": "No, that's all. Thanks!"
+            },
+            {
+                "speaker": "Agent",
+                "timestamp": "00:02:03",
+                "text": "Happy to help! Have a great day."
+            }
+        ]
+    }
+]
