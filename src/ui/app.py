@@ -295,14 +295,70 @@ def render_dashboard_tab():
         )
         st.plotly_chart(fig2, use_container_width=True)
 
-    # Recent calls from DB
+    # Recent calls from DB with sort & filter
     st.subheader("Recent Calls")
-    history = db.get_call_history(limit=20)
+    history = db.get_call_history(limit=100)
     if history:
+        # Filter and sort controls
+        col_search, col_score_filter, col_status_filter, col_sort = st.columns([2, 1, 1, 1])
+        with col_search:
+            dash_search = st.text_input("🔍 Search", placeholder="Search by topic or agent...", key="dash_search")
+        with col_score_filter:
+            score_band = st.selectbox("Score Band", ["All", "🟢 Excellent (8+)", "🟡 Good (6-8)", "🟠 Needs Work (4-6)", "🔴 Critical (<4)"], key="dash_score")
+        with col_status_filter:
+            status_filter = st.selectbox("Status", ["All", "resolved", "escalated", "pending"], key="dash_status")
+        with col_sort:
+            sort_by = st.selectbox("Sort By", ["Newest First", "Oldest First", "Score ↑", "Score ↓"], key="dash_sort")
+
+        # Apply filters
+        filtered = []
         for call in history:
             score = call.get("overall_score", 0) or 0
+            intent = call.get("customer_intent", "") or ""
+            agent = call.get("agent_name", "") or ""
+            resolution = call.get("resolution_status", "") or ""
+
+            # Search filter
+            if dash_search:
+                search_target = f"{intent} {agent} {resolution}".lower()
+                if dash_search.lower() not in search_target:
+                    continue
+
+            # Score band filter
+            if score_band.startswith("🟢") and score < 8:
+                continue
+            elif score_band.startswith("🟡") and (score < 6 or score >= 8):
+                continue
+            elif score_band.startswith("🟠") and (score < 4 or score >= 6):
+                continue
+            elif score_band.startswith("🔴") and score >= 4:
+                continue
+
+            # Status filter
+            if status_filter != "All" and resolution != status_filter:
+                continue
+
+            filtered.append(call)
+
+        # Apply sorting
+        if sort_by == "Score ↓":
+            filtered.sort(key=lambda c: c.get("overall_score", 0) or 0, reverse=True)
+        elif sort_by == "Score ↑":
+            filtered.sort(key=lambda c: c.get("overall_score", 0) or 0)
+        elif sort_by == "Oldest First":
+            filtered.sort(key=lambda c: c.get("call_date", "") or "")
+        # "Newest First" is the default DB order
+
+        # Show count
+        st.caption(f"Showing {len(filtered)} of {len(history)} calls")
+
+        # Render filtered results
+        for idx, call in enumerate(filtered, start=1):
+            score = call.get("overall_score", 0) or 0
             emoji = get_score_emoji(score)
-            col_a, col_b, col_c = st.columns([3, 1, 1])
+            col_num, col_a, col_b, col_c, col_d = st.columns([0.3, 3, 1, 1, 1])
+            with col_num:
+                st.caption(f"**{idx}**")
             with col_a:
                 intent = call.get("customer_intent", "Call Analysis")
                 agent = call.get("agent_name", "")
@@ -311,8 +367,11 @@ def render_dashboard_tab():
             with col_b:
                 st.write(f"{emoji} {score}/10")
             with col_c:
-                status = call.get("resolution_status", "—")
-                st.write(status or "—")
+                resolution = call.get("resolution_status", "—")
+                st.write(resolution or "—")
+            with col_d:
+                call_date = call.get("call_date", "") or ""
+                st.caption(call_date[:10] if len(str(call_date)) >= 10 else "—")
     else:
         st.info("No calls analyzed yet. Go to the Analyze tab to get started!")
 
