@@ -1,81 +1,113 @@
-# 📞 Clarity CX — AI-Powered Call Center Intelligence
+# 📞 Clarity CX
 
-> **Codename:** "Contact Center Brain"  
-> *Transform raw call data into structured summaries and QA insights*
+### AI-Powered Call Center Intelligence Platform
 
-## 🎯 What is Clarity CX?
+> Transform call center recordings and transcripts into structured summaries, quality scores, and actionable insights.
 
-Clarity CX is a **multi-agent AI system** that converts call center recordings and transcripts into:
-- **Structured summaries** with key points and action items
-- **Quality scores** across 5 dimensions (empathy, resolution, professionalism, compliance, efficiency)
-- **PII detection** and compliance monitoring
-- **Sentiment analysis** throughout the call trajectory
-- **Actionable insights** for supervisors and QA managers
+![Backend Architecture](docs/images/backend_architecture.png)
 
-## 🏗️ Architecture
-
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Frontend | Streamlit | Upload, visualize, interact |
-| API | FastAPI | REST endpoints |
-| Orchestration | LangGraph | Pipeline state machine |
-| Agents | 5 Specialists | Intake → Transcribe → Summarize → Score → Route |
-| LLMs | Gemini 2.0 Flash / GPT-4o / Claude | Multi-provider with fallback |
-| Tools | MCP (7 tools) | Whisper, Sentiment, PII, Compliance |
-| Observability | Arize Phoenix | Tracing, eval workbench (localhost:6006) |
-| Deployment | Docker + Cloud Run | Containerized |
-
-## 🤖 Agent Roster
-
-| Agent | Role | Key Output |
-|-------|------|------------|
-| 📥 **Call Intake** | Validate input, extract metadata | Format, duration, caller ID |
-| 🎙️ **Transcription** | Whisper STT, speaker diarization | Timestamped transcript |
-| 📝 **Summarization** | Key points, action items | Structured summary (Pydantic) |
-| 📊 **Quality Scoring** | 5-dimension rubric evaluation | Scores + justifications |
-| 🔀 **Routing** | Fallback logic, error recovery | Final assembled report |
+---
 
 ## 🚀 Quick Start
 
 ```bash
-# Clone the repository
-git clone <repo-url>
-cd clarity-cx
+# 1. Clone & install
+git clone <repo-url> clarity-cx && cd clarity-cx
+uv venv && source venv/bin/activate
+uv pip install -r requirements.txt
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Set up environment variables
+# 2. Configure
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env → add GOOGLE_API_KEY (minimum)
 
-# Run the application
+# 3. Seed sample data (optional)
+python scripts/seed_database.py
+
+# 4. Run
 streamlit run src/ui/app.py
 ```
 
-## 📖 Documentation
+📖 **See [docs/QUICKSTART.md](docs/QUICKSTART.md) for the full setup guide.**
+
+---
+
+## 🤖 Five Specialist Agents
+
+| Agent | Role | Key Feature |
+|-------|------|-------------|
+| 📥 **Intake** | Input validation & metadata extraction | Auto-detects agent names |
+| 🎙️ **Transcription** | Audio→Text conversion | Gemini 2.0 Flash + Whisper fallback |
+| 📝 **Summarization** | LLM-powered call summaries | Key points, action items, intent |
+| 📊 **Quality Scoring** | 5-dimension quality assessment | Empathy, Resolution, Professionalism, Compliance, Efficiency |
+| 🔀 **Routing** | Report assembly & error recovery | Graceful degradation for partial failures |
+
+All orchestrated via **LangGraph** state machine with parallel processing.
+
+---
+
+## 🖥️ Five-Tab UI
+
+| Tab | Purpose |
+|-----|---------|
+| 📊 **Dashboard** | Live metrics, score distribution, recent calls with filter/sort |
+| 🎙️ **Analyze Call** | Upload audio, paste transcript, or select from 20 samples |
+| 📋 **Call History** | Browse all analyzed calls with search and score filtering |
+| 📈 **Trends** | Quality trends over time, dimension averages, top topics |
+| ⚙️ **Settings** | LLM provider and model configuration |
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Technology |
+|----------|------------|
+| Frontend | Streamlit, Plotly, Custom CSS |
+| Backend | FastAPI, LangGraph, MCP (7 tools) |
+| LLMs | Gemini 2.0 Flash, GPT-4o, Claude |
+| Transcription | Gemini 2.0 Flash (primary), Whisper (fallback) |
+| Database | SQLite |
+| Observability | Arize Phoenix + OpenTelemetry |
+| Evaluations | Phoenix LLM-as-Judge (7 metrics) |
+| Testing | pytest (26 tests) |
+| Deployment | Google Cloud Run, Docker |
+
+---
+
+## 📚 Documentation
 
 | Document | Description |
 |----------|-------------|
-| [SPEC_DEV.md](./SPEC_DEV.md) | Technical Specification (14 sections) |
-| [ROADMAP.md](./ROADMAP.md) | Execution Roadmap (5 phases) |
-| [Architecture](./docs/ARCHITECTURE.md) | Architecture Diagrams |
-| [Presentation](./docs/presentation.html) | Capstone Slide Deck |
+| [Quick Start](docs/QUICKSTART.md) | 5-minute setup guide |
+| [Architecture](docs/ARCHITECTURE.md) | System architecture with diagrams |
+| [Code Walkthrough](docs/CODE_WALKTHROUGH.md) | Every module explained |
+| [Deployment](docs/DEPLOYMENT.md) | Google Cloud Run guide |
+| [Scoring](docs/SCORING.md) | Rubric assessment with evidence |
+| [Technical Spec](SPEC_DEV.md) | Full technical specification |
+| [Roadmap](ROADMAP.md) | Development timeline |
 
-## 📊 Evaluation Criteria
+---
 
-| Category | Weight | Target |
-|----------|--------|--------|
-| Functionality | 35% | 95% |
-| Agent Design | 25% | 95% |
-| User Experience | 15% | 90% |
-| Routing & Fallback | 15% | 90% |
-| Documentation | 10% | 95% |
+## 🧪 Testing
 
-## 📝 License
+```bash
+python -m pytest tests/ -v
+# 26 tests — agents, models, PII detection, compliance, database, samples
+```
 
-This project is part of the **Applied Agentic AI for SWEs** capstone program.
+---
+
+## 📦 Deployment
+
+```bash
+# Build & deploy to Google Cloud Run
+docker build -t clarity-cx .
+gcloud run deploy clarity-cx --image clarity-cx --port 8501
+```
+
+📖 **See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the full deployment guide.**
+
+---
+
+## 📄 License
+
+MIT

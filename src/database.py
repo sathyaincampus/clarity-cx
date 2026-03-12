@@ -2,6 +2,7 @@
 
 import sqlite3
 import json
+import re
 import uuid
 from datetime import datetime
 from typing import Dict, Any, List, Optional
@@ -33,6 +34,8 @@ class Database:
             conn.executescript("""
                 CREATE TABLE IF NOT EXISTS calls (
                     id TEXT PRIMARY KEY,
+                    case_id TEXT,
+                    order_id TEXT,
                     caller_id TEXT,
                     agent_name TEXT,
                     duration_seconds INTEGER,
@@ -90,6 +93,21 @@ class Database:
         finally:
             conn.close()
 
+    @staticmethod
+    def _generate_case_id() -> str:
+        """Generate a human-readable case ID like CX-20260310-A4F2."""
+        date_part = datetime.now().strftime("%Y%m%d")
+        rand_part = uuid.uuid4().hex[:4].upper()
+        return f"CX-{date_part}-{rand_part}"
+
+    @staticmethod
+    def _extract_order_id(text: str) -> str:
+        """Extract order ID from transcript or summary text (e.g. ORD-5678)."""
+        if not text:
+            return ""
+        match = re.search(r'\b(ORD-\w+)\b', text, re.IGNORECASE)
+        return match.group(1).upper() if match else ""
+
     def save_analysis(self, report: Dict[str, Any]) -> str:
         """Save a complete analysis report to the database.
 
@@ -104,17 +122,28 @@ class Database:
             summary = report.get("summary", {})
             quality = report.get("quality_scores", {})
 
+            # Generate case ID and extract order ID
+            case_id = metadata.get("case_id") or self._generate_case_id()
+            # Try to find order ID in transcript or summary
+            transcript_text = report.get("transcript_preview", "")
+            summary_text = summary.get("summary", "") if isinstance(summary, dict) else ""
+            order_id = metadata.get("order_id") or self._extract_order_id(
+                transcript_text + " " + summary_text
+            )
+
             # Save call record
             conn.execute(
-                """INSERT INTO calls (id, caller_id, agent_name, duration_seconds,
-                   call_date, source_type, source_path, language)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                """INSERT INTO calls (id, case_id, order_id, caller_id, agent_name,
+                   duration_seconds, call_date, source_type, source_path, language)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 (
                     call_id,
+                    case_id,
+                    order_id,
                     metadata.get("caller_id", ""),
                     metadata.get("agent_name", ""),
                     metadata.get("duration_seconds", 0),
-                    datetime.now().isoformat(),
+                    metadata.get("call_date") or datetime.now().isoformat(),
                     metadata.get("source", ""),
                     metadata.get("file_path", ""),
                     metadata.get("language", "en"),
@@ -197,16 +226,77 @@ class Database:
             conn.close()
 
     def get_call_history(self, limit: int = 50) -> List[Dict[str, Any]]:
-        """Get recent call analysis history"""
+        """Get recent call analysis history with dimension scores"""
         conn = self._get_conn()
         try:
             rows = conn.execute(
                 """SELECT c.*, a.summary, a.customer_intent, a.resolution_status,
-                          q.overall_score
+                          a.key_points, a.action_items, a.topics, a.sentiment_trajectory,
+                          q.overall_score,
+                          q.empathy_score, q.empathy_justification,
+                          q.resolution_score, q.resolution_justification,
+                          q.professionalism_score, q.professionalism_justification,
+                          q.compliance_score, q.compliance_justification,
+                          q.efficiency_score, q.efficiency_justification,
+                          q.flags, q.recommendations,
+                          t.full_text as transcript_text, t.word_count
                    FROM calls c
                    LEFT JOIN analyses a ON a.call_id = c.id
                    LEFT JOIN quality_scores q ON q.call_id = c.id
+                   LEFT JOIN transcripts t ON t.call_id = c.id
                    ORDER BY c.created_at DESC
+                   LIMIT ?""",
+                (limit,),
+            ).fetchall()
+
+            return [dict(r) for r in rows]
+        finally:
+            conn.close()
+
+    def get_call_detail(self, call_id: str) -> Optional[Dict[str, Any]]:
+        """Get full detail for a single call across all tables."""
+        conn = self._get_conn()
+        try:
+            row = conn.execute(
+                """SELECT c.*,
+                          a.summary, a.key_points, a.action_items, a.topics,
+                          a.customer_intent, a.resolution_status, a.sentiment_trajectory,
+                          q.overall_score,
+                          q.empathy_score, q.empathy_justification,
+                          q.resolution_score, q.resolution_justification,
+                          q.professionalism_score, q.professionalism_justification,
+                          q.compliance_score, q.compliance_justification,
+                          q.efficiency_score, q.efficiency_justification,
+                          q.flags, q.recommendations,
+                          t.full_text as transcript_text, t.word_count
+                   FROM calls c
+                   LEFT JOIN analyses a ON a.call_id = c.id
+                   LEFT JOIN quality_scores q ON q.call_id = c.id
+                   LEFT JOIN transcripts t ON t.call_id = c.id
+                   WHERE c.id = ?""",
+                (call_id,),
+            ).fetchone()
+
+            return dict(row) if row else None
+        finally:
+            conn.close()
+
+    def get_agent_leaderboard(self, limit: int = 10) -> List[Dict[str, Any]]:
+        """Get agents ranked by average quality score."""
+        conn = self._get_conn()
+        try:
+            rows = conn.execute(
+                """SELECT c.agent_name,
+                          COUNT(*) as call_count,
+                          ROUND(AVG(q.overall_score), 1) as avg_score,
+                          ROUND(AVG(q.empathy_score), 1) as avg_empathy,
+                          ROUND(AVG(q.resolution_score), 1) as avg_resolution,
+                          ROUND(AVG(q.professionalism_score), 1) as avg_professionalism
+                   FROM calls c
+                   JOIN quality_scores q ON q.call_id = c.id
+                   WHERE c.agent_name IS NOT NULL AND c.agent_name != ''
+                   GROUP BY c.agent_name
+                   ORDER BY avg_score DESC
                    LIMIT ?""",
                 (limit,),
             ).fetchall()

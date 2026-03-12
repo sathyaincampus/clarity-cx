@@ -547,6 +547,7 @@ def seed():
                 "caller_id": analysis.get("caller_id", f"C-2026-{i:04d}"),
                 "agent_name": analysis.get("agent_name", AGENT_NAMES[i % len(AGENT_NAMES)]),
                 "duration_seconds": analysis.get("duration_seconds", 90),
+                "call_date": call_date.isoformat(),
                 "file_path": "",
                 "source": "json_seed",
                 "language": "en",

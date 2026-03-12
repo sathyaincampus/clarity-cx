@@ -1,26 +1,46 @@
 # Clarity CX — Architecture Documentation
 
-> **Version:** 1.0.0  
-> **Last Updated:** February 22, 2026
+> **Version:** 2.0.0
+> **Last Updated:** March 9, 2026
 
 ---
 
 ## Backend Architecture
+
+![Backend Architecture](images/backend_architecture.png)
 
 The Clarity CX backend follows a layered pipeline architecture with clear separation of concerns.
 
 ### Layers
 
 | Layer | Components | Purpose |
-|-------|------------|---------|
+|-------|------------|------------|
 | **Input Layer** | Audio Upload, Transcript Upload, Text Paste | Entry points for call data |
-| **API Gateway** | FastAPI (Port 8000) | REST endpoints, file handling |
-| **Orchestration** | LangGraph, State Machine, MCP Client | Pipeline orchestration, tool coordination |
-| **Agent Layer** | 5 specialized agents | Sequential + parallel processing |
-| **MCP Tools** | Whisper, Sentiment, PII Detector, Formatter | External integrations |
-| **Storage** | SQLite, ChromaDB | Persistence layer |
-| **Observability** | Arize Phoenix | Tracing and monitoring (localhost:6006) |
-| **AI Services** | OpenAI, Anthropic, Google | Multi-provider LLM support |
+| **Orchestration** | LangGraph StateGraph, Pipeline State Machine | Sequential + parallel agent execution |
+| **Agent Layer** | 5 specialized agents | Process, analyze, and score calls |
+| **AI Services** | Gemini 2.0 Flash, GPT-4o, Claude | Multi-provider LLM support |
+| **MCP Tools** | 7 tools: Sentiment, PII, Compliance, etc. | Modular tool integrations |
+| **Storage** | SQLite (`clarity_cx.db`) | Call records, analyses, quality scores |
+| **Observability** | Arize Phoenix + OpenTelemetry | Tracing and LLM evaluations |
+| **API Gateway** | FastAPI (Port 8000) | REST endpoints for external access |
+
+---
+
+## Frontend Architecture
+
+![Frontend Architecture](images/frontend_architecture.png)
+
+The Clarity CX frontend is built with Streamlit for rapid development and responsive design.
+
+### Layers
+
+| Layer | Components | Purpose |
+|-------|------------|------------|
+| **User Layer** | Supervisors, QA Managers, Analysts | Cross-platform browser access |
+| **Pages/Tabs** | Dashboard, Analyze, History, Trends, Settings | 5-tab navigation |
+| **Components** | Score Cards, Plotly Charts, Transcript Viewer | Reusable UI elements |
+| **Features** | Audio Transcription, Quality Scoring, PII Detection | Core capabilities |
+| **Data Layer** | SQLite queries, Session State, LangGraph calls | Backend communication |
 
 ---
 
@@ -29,17 +49,17 @@ The Clarity CX backend follows a layered pipeline architecture with clear separa
 ```mermaid
 flowchart TB
     subgraph Input["📁 INPUT LAYER"]
-        Audio["🎙️ Audio Files<br/>(WAV/MP3)"]
+        Audio["🎙️ Audio Files<br/>(WAV/MP3/FLAC)"]
         JSON["📄 JSON Transcripts"]
         Text["📝 Plain Text"]
     end
 
     subgraph Validation["📥 VALIDATION"]
-        Intake["Call Intake Agent<br/>Format Detection<br/>Metadata Extraction"]
+        Intake["Call Intake Agent<br/>Format Detection<br/>Metadata + Agent Name Extraction"]
     end
 
     subgraph Transcription["🎙️ TRANSCRIPTION"]
-        STT["Transcription Agent<br/>Whisper API<br/>Speaker Diarization"]
+        STT["Transcription Agent<br/>Gemini 2.0 Flash (primary)<br/>Whisper API (fallback)"]
     end
 
     subgraph Analysis["🧠 PARALLEL ANALYSIS"]
@@ -48,7 +68,7 @@ flowchart TB
     end
 
     subgraph Control["🔀 CONTROL & OUTPUT"]
-        Router["Routing Agent<br/>Fallback + Error Recovery"]
+        Router["Routing Agent<br/>Report Assembly + Error Recovery"]
         Report["📋 Final Report<br/>Summary + Scores + Flags"]
     end
 
@@ -57,71 +77,54 @@ flowchart TB
     Validation -->|Text/JSON| Analysis
     Transcription --> Analysis
     Analysis --> Control
-
-    classDef input fill:#3498db,stroke:#2980b9,color:white
-    classDef agent fill:#2ecc71,stroke:#27ae60,color:white
-    classDef output fill:#9b59b6,stroke:#8e44ad,color:white
 ```
 
 ---
 
-## Frontend Architecture
-
-The Clarity CX frontend is built with Streamlit for rapid development and responsive design.
-
-### Layers
-
-| Layer | Components | Purpose |
-|-------|------------|---------|
-| **User Layer** | Desktop, Mobile browsers | Cross-platform access |
-| **Navigation** | Streamlit Tabs | Tab-based 5-section layout |
-| **Pages** | Dashboard, Analyze, History, Trends, Settings | Feature screens |
-| **Components** | Score Cards, Charts, Transcript Viewer | Reusable UI elements |
-| **State** | Session State | User settings, analysis cache |
-| **Services** | HTTP Client, File Upload | Backend communication |
-
----
-
-## Data Flow
+## Data Flow (Sequence Diagram)
 
 ```mermaid
 sequenceDiagram
     participant U as Supervisor
     participant UI as Streamlit
-    participant API as FastAPI
     participant LG as LangGraph
-    participant A as Agents
-    participant T as MCP Tools
-    participant LLM as LLM Provider
+    participant IA as Intake Agent
+    participant TA as Transcription Agent
+    participant SA as Summarization Agent
+    participant QA as Quality Scoring Agent
+    participant RA as Routing Agent
+    participant LLM as Gemini 2.0 Flash
     participant DB as SQLite
 
-    U->>UI: Upload call recording
-    UI->>API: POST /api/v1/analyze
-    API->>LG: Initialize pipeline state
+    U->>UI: Upload audio / paste transcript
+    UI->>LG: analyze_call(input, provider, model)
 
-    LG->>A: Intake Agent (validate)
-    A-->>LG: Metadata extracted
+    LG->>IA: Validate input
+    IA-->>LG: Metadata + agent_name extracted
 
-    LG->>A: Transcription Agent
-    A->>T: Whisper API
-    T-->>A: Transcript + timestamps
-    A-->>LG: Structured transcript
-
-    par Parallel Analysis
-        LG->>A: Summarization Agent
-        A->>LLM: Generate summary
-        LLM-->>A: Structured summary
-    and
-        LG->>A: Quality Scoring Agent
-        A->>LLM: Score with rubric
-        LLM-->>A: 5-dimension scores
+    alt Audio Input
+        LG->>TA: Transcribe audio
+        TA->>LLM: Send audio to Gemini
+        LLM-->>TA: Transcript + speakers + timestamps
+        TA-->>LG: Structured transcript
     end
 
-    LG->>A: Routing Agent (assemble)
-    A-->>API: Final report
-    API->>DB: Store results
-    API-->>UI: Stream response
-    UI-->>U: Display report
+    par Parallel Analysis
+        LG->>SA: Generate summary
+        SA->>LLM: Summarize transcript
+        LLM-->>SA: Summary, key points, intent, topics
+    and
+        LG->>QA: Score quality
+        QA->>LLM: 5-dimension scoring rubric
+        LLM-->>QA: Scores + justifications + flags
+    end
+
+    LG->>RA: Assemble report
+    RA-->>UI: Final report (JSON)
+    UI->>DB: save_analysis(report)
+    DB-->>UI: call_id
+    UI->>UI: st.rerun() → Dashboard updates
+    UI-->>U: Display report + updated dashboard
 ```
 
 ---
@@ -139,44 +142,53 @@ flowchart LR
         Q --> R
     end
 
-    subgraph Tools["MCP Tools"]
-        W["Whisper API"]
-        SE["Sentiment"]
+    subgraph Tools["MCP Tools (7)"]
+        ST["Sentiment"]
         PII["PII Detect"]
-        FMT["Formatter"]
+        CC["Compliance"]
+        TF["Text Format"]
+        AP["Audio Process"]
+        TP["Transcript Parse"]
+        RG["Report Gen"]
     end
 
     subgraph LLMs["LLM Providers"]
-        O["OpenAI"]
-        A["Anthropic"]
-        G["Google"]
+        G["Google Gemini"]
+        O["OpenAI GPT"]
+        A["Anthropic Claude"]
     end
 
-    T --> W
-    Q --> SE
-    Q --> PII
-    R --> FMT
-    S --> O
-    Q --> O
+    T -.-> AP
+    Q -.-> ST
+    Q -.-> PII
+    Q -.-> CC
+    R -.-> TF
+    R -.-> RG
+    S --> G
+    Q --> G
 ```
 
 ---
 
-## Technology Stack Summary
+## Technology Stack
 
 | Category | Technology |
 |----------|------------|
-| Frontend | Streamlit, Plotly, Custom CSS |
-| Backend | FastAPI, LangGraph, MCP |
-| LLMs | Gemini 2.0 Flash, GPT-4o, Claude |
-| Agents | 5 specialists (Intake, Transcription, Summarization, Quality Scoring, Routing) |
-| Transcription | OpenAI Whisper |
-| Databases | SQLite (records), ChromaDB (vectors) |
-| Structured Output | Pydantic v2 |
-| Observability | Arize Phoenix |
-| Evaluations | DeepEval (Relevance, Faithfulness, Hallucination) |
-| Deployment | Google Cloud Run, Docker |
+| **Frontend** | Streamlit, Plotly, Custom CSS |
+| **Backend** | FastAPI, LangGraph, MCP |
+| **Primary LLM** | Gemini 2.0 Flash (transcription + analysis) |
+| **Additional LLMs** | GPT-4o, GPT-4o-mini, Claude Sonnet, Claude Haiku |
+| **Agents** | 5 specialists (Intake, Transcription, Summarization, Quality Scoring, Routing) |
+| **Transcription** | Gemini 2.0 Flash (primary), OpenAI Whisper (fallback) |
+| **MCP Tools** | 7 tools (Sentiment, PII, Compliance, Format, Audio, Parse, Report) |
+| **Database** | SQLite (call records, analyses, quality scores) |
+| **Structured Output** | Pydantic v2 |
+| **Observability** | Arize Phoenix + OpenTelemetry |
+| **Evaluations** | Phoenix LLM-as-Judge (7 metrics) |
+| **Testing** | pytest (26 tests) |
+| **Deployment** | Google Cloud Run, Docker |
 
 ---
 
-*See [SPEC_DEV.md](../SPEC_DEV.md) for complete technical specifications.*
+*See [CODE_WALKTHROUGH.md](./CODE_WALKTHROUGH.md) for detailed module documentation.*
+*See [DEPLOYMENT.md](./DEPLOYMENT.md) for cloud deployment instructions.*

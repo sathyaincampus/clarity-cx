@@ -318,13 +318,11 @@ def render_dashboard_tab():
             agent = call.get("agent_name", "") or ""
             resolution = call.get("resolution_status", "") or ""
 
-            # Search filter
             if dash_search:
                 search_target = f"{intent} {agent} {resolution}".lower()
                 if dash_search.lower() not in search_target:
                     continue
 
-            # Score band filter
             if score_band.startswith("🟢") and score < 8:
                 continue
             elif score_band.startswith("🟡") and (score < 6 or score >= 8):
@@ -334,7 +332,6 @@ def render_dashboard_tab():
             elif score_band.startswith("🔴") and score >= 4:
                 continue
 
-            # Status filter
             if status_filter != "All" and resolution != status_filter:
                 continue
 
@@ -347,33 +344,168 @@ def render_dashboard_tab():
             filtered.sort(key=lambda c: c.get("overall_score", 0) or 0)
         elif sort_by == "Oldest First":
             filtered.sort(key=lambda c: c.get("call_date", "") or "")
-        # "Newest First" is the default DB order
 
-        # Show count
         st.caption(f"Showing {len(filtered)} of {len(history)} calls")
 
-        # Render filtered results
+        # Render expandable drilldowns
         for idx, call in enumerate(filtered, start=1):
             score = call.get("overall_score", 0) or 0
             emoji = get_score_emoji(score)
-            col_num, col_a, col_b, col_c, col_d = st.columns([0.3, 3, 1, 1, 1])
-            with col_num:
-                st.caption(f"**{idx}**")
-            with col_a:
-                intent = call.get("customer_intent", "Call Analysis")
-                agent = call.get("agent_name", "")
-                label = f"**{intent}**" + (f" — Agent: {agent}" if agent else "")
-                st.write(label)
-            with col_b:
-                st.write(f"{emoji} {score}/10")
-            with col_c:
-                resolution = call.get("resolution_status", "—")
-                st.write(resolution or "—")
-            with col_d:
-                call_date = call.get("call_date", "") or ""
-                st.caption(call_date[:10] if len(str(call_date)) >= 10 else "—")
+            intent = call.get("customer_intent", "Call Analysis") or "Call Analysis"
+            agent = call.get("agent_name", "")
+            resolution = call.get("resolution_status", "—") or "—"
+            call_date = call.get("call_date", "") or ""
+            date_str = call_date[:10] if len(str(call_date)) >= 10 else "—"
+            case_id = call.get("case_id", "") or ""
+            order_id = call.get("order_id", "") or ""
+
+            label = f"{idx}. {emoji} **{intent}** — {score}/10 | {resolution}"
+            if case_id:
+                label += f" | {case_id}"
+            if agent:
+                label += f" | Agent: {agent}"
+            label += f" | {date_str}"
+
+            with st.expander(label):
+                # Case & Order IDs
+                id_cols = st.columns(4)
+                with id_cols[0]:
+                    st.caption(f"🎫 Case: **{case_id}**" if case_id else "🎫 Case: —")
+                with id_cols[1]:
+                    st.caption(f"📦 Order: **{order_id}**" if order_id else "📦 Order: —")
+                with id_cols[2]:
+                    st.caption(f"👤 Agent: **{agent}**" if agent else "👤 Agent: —")
+                with id_cols[3]:
+                    st.caption(f"📅 {date_str}")
+
+                # Top section: Summary + Radar Chart
+                col_summary, col_radar = st.columns([3, 2])
+
+                with col_summary:
+                    summary_text = call.get("summary", "") or ""
+                    if summary_text:
+                        st.markdown("**📝 Summary**")
+                        st.write(summary_text)
+
+                    # Key Points
+                    key_points = call.get("key_points", "")
+                    if key_points:
+                        try:
+                            import json as _json
+                            points = _json.loads(key_points) if isinstance(key_points, str) else key_points
+                            if points:
+                                st.markdown("**🎯 Key Points**")
+                                for pt in points:
+                                    st.write(f"• {pt}")
+                        except Exception:
+                            pass
+
+                    # Action Items
+                    action_items = call.get("action_items", "")
+                    if action_items:
+                        try:
+                            items = _json.loads(action_items) if isinstance(action_items, str) else action_items
+                            if items:
+                                st.markdown("**📋 Action Items**")
+                                for item in items:
+                                    st.write(f"☐ {item}")
+                        except Exception:
+                            pass
+
+                with col_radar:
+                    # Radar chart for 5 quality dimensions
+                    emp = call.get("empathy_score", 0) or 0
+                    res = call.get("resolution_score", 0) or 0
+                    pro = call.get("professionalism_score", 0) or 0
+                    com = call.get("compliance_score", 0) or 0
+                    eff = call.get("efficiency_score", 0) or 0
+
+                    if any([emp, res, pro, com, eff]):
+                        import plotly.graph_objects as go
+                        categories = ["Empathy", "Resolution", "Professional", "Compliance", "Efficiency"]
+                        values = [emp, res, pro, com, eff]
+                        values_closed = values + [values[0]]
+                        categories_closed = categories + [categories[0]]
+
+                        fig = go.Figure(data=[
+                            go.Scatterpolar(
+                                r=values_closed,
+                                theta=categories_closed,
+                                fill="toself",
+                                fillcolor="rgba(6, 182, 212, 0.2)",
+                                line=dict(color="#06b6d4", width=2),
+                                name="Score",
+                            )
+                        ])
+                        fig.update_layout(
+                            polar=dict(
+                                radialaxis=dict(visible=True, range=[0, 10], showticklabels=True, tickfont=dict(size=10)),
+                                bgcolor="rgba(0,0,0,0)",
+                            ),
+                            showlegend=False,
+                            margin=dict(l=40, r=40, t=20, b=20),
+                            height=220,
+                            paper_bgcolor="rgba(0,0,0,0)",
+                            font=dict(color="#94a3b8", size=11, family="Inter"),
+                        )
+                        st.plotly_chart(fig, use_container_width=True, key=f"radar_{idx}")
+                    else:
+                        st.metric("Overall Score", f"{score}/10")
+
+                # Dimension scores with justifications
+                emp_j = call.get("empathy_justification", "") or ""
+                res_j = call.get("resolution_justification", "") or ""
+                pro_j = call.get("professionalism_justification", "") or ""
+                com_j = call.get("compliance_justification", "") or ""
+                eff_j = call.get("efficiency_justification", "") or ""
+
+                if any([emp_j, res_j, pro_j, com_j, eff_j]):
+                    st.markdown("**📊 Dimension Breakdown**")
+                    dim_cols = st.columns(5)
+                    dims = [
+                        ("Empathy", emp, emp_j),
+                        ("Resolution", res, res_j),
+                        ("Professional", pro, pro_j),
+                        ("Compliance", com, com_j),
+                        ("Efficiency", eff, eff_j),
+                    ]
+                    for col_dim, (name, sc, just) in zip(dim_cols, dims):
+                        with col_dim:
+                            st.metric(name, f"{sc}/10")
+                            if just:
+                                st.caption(just[:80])
+
+                # Transcript preview
+                transcript = call.get("transcript_text", "") or ""
+                if transcript:
+                    with st.expander("📜 Transcript Preview", expanded=False):
+                        st.text(transcript[:1000] + ("..." if len(transcript) > 1000 else ""))
     else:
         st.info("No calls analyzed yet. Go to the Analyze tab to get started!")
+
+    # Agent Performance Leaderboard
+    st.divider()
+    st.subheader("🏆 Agent Leaderboard")
+    leaderboard = db.get_agent_leaderboard(limit=10)
+    if leaderboard:
+        for rank, agent_data in enumerate(leaderboard, start=1):
+            name = agent_data.get("agent_name", "Unknown")
+            avg = agent_data.get("avg_score", 0) or 0
+            count = agent_data.get("call_count", 0)
+            emoji = get_score_emoji(avg)
+            medal = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else f"#{rank}"
+
+            col_rank, col_name, col_score, col_calls = st.columns([0.5, 2, 1, 1])
+            with col_rank:
+                st.write(f"**{medal}**")
+            with col_name:
+                st.write(f"**{name}**")
+            with col_score:
+                st.write(f"{emoji} {avg}/10")
+            with col_calls:
+                st.caption(f"{count} calls")
+    else:
+        st.caption("No agent data available yet. Agent names are extracted from transcripts during analysis.")
 
 
 def render_analyze_tab():
@@ -401,11 +533,24 @@ def render_analyze_tab():
             st.info("🎙️ Audio file ready for transcription via Gemini")
 
     elif input_method == "📝 Paste Transcript":
+        # Initialize session state for transcript text
+        if "transcript_input" not in st.session_state:
+            st.session_state["transcript_input"] = ""
+
         input_text = st.text_area(
             "Paste call transcript",
+            value=st.session_state["transcript_input"],
             height=250,
             placeholder="Agent: Thank you for calling...\nCustomer: Hi, I'm calling about...",
+            key="transcript_text_area",
         )
+        # Update session state
+        st.session_state["transcript_input"] = input_text
+
+        if input_text:
+            if st.button("🗑️ Clear Transcript", type="secondary"):
+                st.session_state["transcript_input"] = ""
+                st.rerun()
 
     elif input_method == "📁 Sample Transcript":
         samples = load_sample_transcripts()
@@ -647,71 +792,91 @@ def _render_report(report: dict):
 
 
 def render_history_tab():
-    """Call history tab — reads from database"""
+    """Call history tab — compact data table view with export"""
     st.header("📋 Call History")
+    st.caption("Compact table view for browsing and exporting call data. For detailed drilldowns, use the Dashboard tab.")
 
     from src.database import get_db
     db = get_db()
-    history = db.get_call_history(limit=50)
+    history = db.get_call_history(limit=200)
 
     if not history:
         st.info("No call history yet. Analyze some calls or run `python scripts/seed_database.py` to load sample data!")
         return
 
+    # Build data table
+    import pandas as pd
+    rows = []
+    for c in history:
+        score = c.get("overall_score", 0) or 0
+        rows.append({
+            "#": len(rows) + 1,
+            "Case ID": c.get("case_id", "") or "—",
+            "Order ID": c.get("order_id", "") or "—",
+            "Date": (c.get("call_date", "") or "")[:10],
+            "Agent": c.get("agent_name", "") or "—",
+            "Intent": c.get("customer_intent", "") or "—",
+            "Score": score,
+            "Band": "🟢" if score >= 8 else "🟡" if score >= 6 else "🟠" if score >= 4 else "🔴",
+            "Empathy": c.get("empathy_score", 0) or 0,
+            "Resolution": c.get("resolution_score", 0) or 0,
+            "Professional": c.get("professionalism_score", 0) or 0,
+            "Compliance": c.get("compliance_score", 0) or 0,
+            "Efficiency": c.get("efficiency_score", 0) or 0,
+            "Status": c.get("resolution_status", "") or "—",
+        })
+
+    df = pd.DataFrame(rows)
+
     # Filter controls
-    col_search, col_filter = st.columns([2, 1])
+    col_search, col_filter, col_export = st.columns([2, 1, 1])
     with col_search:
-        search = st.text_input("🔍 Search calls", placeholder="Search by topic or agent...")
+        search = st.text_input("🔍 Search", placeholder="Search by agent, intent...", key="hist_search")
     with col_filter:
-        filter_score = st.selectbox("Filter by score", ["All", "🟢 Excellent", "🟡 Good", "🟠 Needs Work", "🔴 Critical"])
+        filter_band = st.selectbox("Score Band", ["All", "🟢 Excellent", "🟡 Good", "🟠 Needs Work", "🔴 Critical"], key="hist_band")
+    with col_export:
+        st.write("")
+        csv = df.to_csv(index=False)
+        st.download_button(
+            "📥 Export CSV",
+            csv,
+            "clarity_cx_call_history.csv",
+            "text/csv",
+            use_container_width=True,
+        )
 
-    # Display history from DB
-    for call in history:
-        intent = call.get("customer_intent", "") or "Call Analysis"
-        summary_text = call.get("summary", "") or ""
-        agent_name = call.get("agent_name", "") or ""
-        score = call.get("overall_score", 0) or 0
+    # Apply filters
+    filtered_df = df.copy()
+    if search:
+        mask = filtered_df.apply(lambda row: search.lower() in str(row).lower(), axis=1)
+        filtered_df = filtered_df[mask]
+    if filter_band != "All":
+        band_emoji = filter_band[0]  # Get the emoji
+        filtered_df = filtered_df[filtered_df["Band"] == band_emoji]
 
-        # Search filter
-        search_target = f"{intent} {summary_text} {agent_name}".lower()
-        if search and search.lower() not in search_target:
-            continue
+    st.caption(f"Showing {len(filtered_df)} of {len(df)} calls")
 
-        # Score filter
-        if filter_score != "All":
-            if filter_score.startswith("🟢") and score < 8:
-                continue
-            elif filter_score.startswith("🟡") and (score < 6 or score >= 8):
-                continue
-            elif filter_score.startswith("🟠") and (score < 4 or score >= 6):
-                continue
-            elif filter_score.startswith("🔴") and score >= 4:
-                continue
-
-        emoji = get_score_emoji(score)
-        resolution = call.get("resolution_status", "—") or "—"
-        call_date = call.get("call_date", "") or "—"
-        label = f"{emoji} **{intent}** — Score: {score}/10 | {resolution}"
-        if agent_name:
-            label += f" | Agent: {agent_name}"
-
-        with st.expander(label):
-            col_a, col_b = st.columns([2, 1])
-            with col_a:
-                if summary_text:
-                    st.write("**Summary:**")
-                    st.write(summary_text)
-                else:
-                    st.caption("No summary available")
-            with col_b:
-                st.metric("QA Score", f"{score}/10")
-                st.caption(f"📅 {call_date[:10] if len(str(call_date)) >= 10 else call_date}")
-                st.caption(f"📊 Status: {resolution}")
-                duration = call.get("duration_seconds", 0) or 0
-                if duration > 0:
-                    mins = duration // 60
-                    secs = duration % 60
-                    st.caption(f"⏱️ {mins}:{secs:02d}")
+    # Display as interactive table
+    st.dataframe(
+        filtered_df,
+        use_container_width=True,
+        height=500,
+        column_config={
+            "#": st.column_config.NumberColumn(width="small"),
+            "Score": st.column_config.ProgressColumn(
+                "Score",
+                min_value=0,
+                max_value=10,
+                format="%d/10",
+            ),
+            "Empathy": st.column_config.ProgressColumn(min_value=0, max_value=10, format="%d"),
+            "Resolution": st.column_config.ProgressColumn(min_value=0, max_value=10, format="%d"),
+            "Professional": st.column_config.ProgressColumn(min_value=0, max_value=10, format="%d"),
+            "Compliance": st.column_config.ProgressColumn(min_value=0, max_value=10, format="%d"),
+            "Efficiency": st.column_config.ProgressColumn(min_value=0, max_value=10, format="%d"),
+        },
+        hide_index=True,
+    )
 
 
 def render_trends_tab():
