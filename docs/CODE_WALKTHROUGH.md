@@ -203,13 +203,9 @@ Methods on `Database` class:
 
 ---
 
-## Evaluation Pipeline (`scripts/run_evals.py`)
+## Evaluation Pipeline (`src/evals.py`)
 
-Uses Arize Phoenix LLM-as-judge with Gemini Flash. Run separately after analyzing calls:
-
-```bash
-python scripts/run_evals.py
-```
+Runs **automatically** after each call analysis when `PHOENIX_ENABLED=true`. Uses Gemini Flash as LLM-as-judge. Evaluations execute in a background thread so the UI doesn't block.
 
 | Metric | What It Evaluates |
 |--------|-------------------|
@@ -218,6 +214,8 @@ python scripts/run_evals.py
 | QA Correctness | Quality scores are justified |
 | Toxicity | No inappropriate language |
 | Summarization | Summary quality and completeness |
+
+For batch evaluation of existing traces: `python scripts/run_evals.py`
 
 ---
 

@@ -640,7 +640,7 @@ def render_analyze_tab():
                 # Create trace for Phoenix observability
                 trace = observer.create_trace(
                     session_id=f"analyze-{os.urandom(4).hex()}",
-                    input_text=input_text[:500] if input_text else f"audio:{input_path}",
+                    input_text=input_text or f"audio:{input_path}",
                 )
 
                 # Run the pipeline with span tracking
@@ -658,8 +658,24 @@ def render_analyze_tab():
 
                 # End trace with output
                 report = result.get("final_report", {})
-                output_summary = report.get("summary", {}).get("summary", "")[:500] if report else ""
+                output_summary = report.get("summary", {}).get("summary", "") if report else ""
                 observer.end_trace(trace, output_summary)
+
+                # ── Auto-run LLM-as-Judge evaluations ────────────
+                if os.getenv("PHOENIX_ENABLED", "true").lower() == "true" and report:
+                    try:
+                        from src.evals import run_evals_async
+                        st.write("🧪 **Evaluator**: Running LLM-as-judge evaluations...")
+                        # Get span_id from trace metadata
+                        span_id = trace.metadata.get("span_id")
+                        eval_thread = run_evals_async(
+                            user_input=input_text or "",
+                            response=output_summary,
+                            span_id=span_id,
+                        )
+                        st.write("📊 Evaluations running in background — results appear in Phoenix")
+                    except Exception as eval_err:
+                        logger.debug(f"Auto-eval skipped: {eval_err}")
 
                 # Clean up temp file
                 if input_path:

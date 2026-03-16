@@ -176,6 +176,10 @@ class ClarityObserver:
                     },
                 )
                 trace.metadata["_otel_span"] = span
+                # Store span_id for inline evals to use
+                span_ctx = span.get_span_context()
+                if span_ctx:
+                    trace.metadata["span_id"] = format(span_ctx.span_id, '016x')
             except Exception:
                 pass
 

@@ -1,28 +1,26 @@
 """
-Clarity CX — Phoenix Evaluation Pipeline
+Clarity CX — Inline Evaluation Pipeline
 
-Runs LLM-as-judge evaluations on pipeline outputs and logs results
-back to Phoenix for dashboard visualization.
+Runs LLM-as-judge evaluations automatically after each call analysis
+and logs results back to Phoenix as span annotations.
 
 Uses Gemini Flash as the judge model (free tier).
 
-Evaluates ALL available Phoenix metrics:
+Evaluates 5 metrics:
 - Relevance:        Does the summary address what happened in the call?
 - Hallucination:    Is the summary grounded in the transcript (no fabrication)?
 - QA Quality:       Is the quality score accurate and helpful?
 - Toxicity:         Is the output free of harmful content?
 - Summarization:    Quality of the call summary
-- User Frustration: Would the supervisor be frustrated by the analysis?
-- RAG Relevancy:    Is the retrieved context relevant?
 
-Results appear in Phoenix under "Evaluations" for each trace span.
+Results appear in Phoenix under "Annotations" for each trace span.
 """
 
 from __future__ import annotations
 
 import os
 import logging
-import pandas as pd
+import threading
 from typing import Optional
 
 logger = logging.getLogger(__name__)
@@ -59,20 +57,30 @@ def _get_eval_model():
     return None
 
 
+def _get_phoenix_client():
+    """Get Phoenix client with correct base_url for Phoenix 13.x."""
+    try:
+        from phoenix.client import Client as PhoenixClient
+        return PhoenixClient(base_url="http://localhost:6006")
+    except Exception:
+        return None
+
+
 def run_evals_on_response(
     user_input: str,
     response: str,
     span_id: Optional[str] = None,
-    trace_id: Optional[str] = None,
 ) -> dict:
     """
-    Run ALL Phoenix LLM-as-judge evaluations on a single pipeline output.
+    Run Phoenix LLM-as-judge evaluations on a single pipeline output.
 
     Uses Gemini Flash as judge (free tier). Falls back to GPT-4o-mini.
-    Evaluates: relevance, hallucination, QA, toxicity, summarization,
-    user frustration, RAG relevancy.
+    Evaluates: relevance, hallucination, QA quality, toxicity, summarization.
 
-    Automatically finds the most recent span in Phoenix to attach results.
+    If span_id is provided, logs annotations to Phoenix. Otherwise, finds
+    the most recent span automatically.
+
+    Returns dict of {metric_name: {score, label, explanation}}.
     """
     if os.getenv("PHOENIX_ENABLED", "true").lower() != "true":
         return {}
@@ -92,7 +100,7 @@ def run_evals_on_response(
     except ImportError:
         return {}
 
-    # If no span_id provided, try to find the most recent span in Phoenix
+    # If no span_id, try to find the latest
     if not span_id:
         span_id = _find_latest_span_id()
 
@@ -102,16 +110,23 @@ def run_evals_on_response(
     record = {
         "input": user_input,
         "output": response,
-        "reference": user_input,
+        "reference": user_input,  # transcript serves as ground truth
     }
 
-    # ── Built-in evaluators ──────────────────────────────────────
+    # ── Run built-in evaluators ──────────────────────────────────
     evaluators = {
         "Relevance": RelevanceEvaluator,
         "QA Quality": QAEvaluator,
         "Toxicity": ToxicityEvaluator,
         "Hallucination": HallucinationEvaluator,
     }
+
+    # Optional: Summarization
+    try:
+        from phoenix.evals import SummarizationEvaluator
+        evaluators["Summarization"] = SummarizationEvaluator
+    except (ImportError, Exception):
+        pass
 
     for name, evaluator_class in evaluators.items():
         try:
@@ -130,142 +145,78 @@ def run_evals_on_response(
     # ── Log to Phoenix ───────────────────────────────────────────
     if span_id and eval_results:
         _log_evals_to_phoenix(eval_results, span_id)
-        logger.info(f"Logged {len(eval_results)} evals to span {span_id}")
+        logger.info(f"✅ Logged {len(eval_results)} evals to span {span_id[:12]}...")
 
     return eval_results
+
+
+def run_evals_async(user_input: str, response: str, span_id: Optional[str] = None):
+    """
+    Run evaluations in a background thread so the UI doesn't block.
+    Returns immediately — results are logged to Phoenix asynchronously.
+    """
+    thread = threading.Thread(
+        target=run_evals_on_response,
+        args=(user_input, response, span_id),
+        daemon=True,
+    )
+    thread.start()
+    return thread
 
 
 def _find_latest_span_id() -> Optional[str]:
     """Find the most recent span ID from Phoenix to attach evaluations to."""
     try:
-        import phoenix as px
         import time
+        client = _get_phoenix_client()
+        if not client:
+            return None
 
-        client = px.Client()
-
-        # Retry with increasing delays — span may not be flushed yet
+        # Retry — span may not be flushed yet
         for attempt in range(3):
-            time.sleep(3 + attempt * 2)  # 3s, 5s, 7s
-
+            time.sleep(2 + attempt * 2)  # 2s, 4s, 6s
             try:
-                spans_df = client.get_spans_dataframe(limit=1)
+                spans_df = client.spans.get_spans_dataframe(
+                    project_name="clarity-cx",
+                )
                 if spans_df is not None and not spans_df.empty:
                     span_id = str(spans_df.index[0])
-                    logger.info(f"Found span {span_id} on attempt {attempt + 1}")
+                    logger.info(f"Found span {span_id[:12]}... on attempt {attempt + 1}")
                     return span_id
             except Exception:
                 continue
-
     except Exception as e:
         logger.warning(f"Could not find latest span: {e}")
 
     return None
 
 
-def run_evals_on_traces():
-    """
-    Run batch evaluations on ALL recent Phoenix traces.
-
-    Fetches spans from Phoenix, runs every evaluator, and logs results
-    back so they appear on the dashboard. Uses Gemini as judge.
-    """
-    try:
-        import phoenix as px
-        from phoenix.evals import (
-            HallucinationEvaluator,
-            QAEvaluator,
-            RelevanceEvaluator,
-            ToxicityEvaluator,
-            SummarizationEvaluator,
-            LLMEvaluator,
-            HUMAN_VS_AI_PROMPT_TEMPLATE,
-            USER_FRUSTRATION_PROMPT_TEMPLATE,
-            RAG_RELEVANCY_PROMPT_TEMPLATE,
-            run_evals,
-        )
-        from phoenix.trace import SpanEvaluations
-    except ImportError:
-        logger.info("Phoenix evals not available — install arize-phoenix")
-        return
-
-    eval_model = _get_eval_model()
-    if not eval_model:
-        logger.info("No eval model — set GOOGLE_API_KEY or OPENAI_API_KEY")
-        return
-
-    try:
-        client = px.Client()
-
-        # Get recent spans
-        spans_df = client.get_spans_dataframe()
-        if spans_df is None or spans_df.empty:
-            logger.info("No spans to evaluate")
-            return
-
-        # Define all evaluators
-        evaluator_configs = [
-            ("Relevance", RelevanceEvaluator(eval_model)),
-            ("QA Quality", QAEvaluator(eval_model)),
-            ("Toxicity", ToxicityEvaluator(eval_model)),
-            ("Hallucination", HallucinationEvaluator(eval_model)),
-            ("Summarization", SummarizationEvaluator(eval_model)),
-        ]
-
-        # Template-based evaluators
-        template_configs = [
-            ("User Frustration", USER_FRUSTRATION_PROMPT_TEMPLATE),
-            ("RAG Relevancy", RAG_RELEVANCY_PROMPT_TEMPLATE),
-        ]
-        for name, template in template_configs:
-            evaluator_configs.append((name, LLMEvaluator(eval_model, template)))
-
-        # Run each evaluator and log results
-        for eval_name, evaluator in evaluator_configs:
-            try:
-                results = run_evals(
-                    dataframe=spans_df,
-                    evaluators=[evaluator],
-                    provide_explanation=True,
-                )
-                if results is not None and len(results) > 0:
-                    client.log_evaluations(
-                        SpanEvaluations(eval_name=eval_name, dataframe=results[0])
-                    )
-                    logger.info(f"  ✅ {eval_name}: {len(results[0])} spans evaluated")
-            except Exception as e:
-                logger.warning(f"  ❌ {eval_name} failed: {e}")
-
-        logger.info(f"Batch evals completed on {len(spans_df)} spans")
-
-    except Exception as e:
-        logger.warning(f"Batch eval error: {e}")
-
-
-def _log_evals_to_phoenix(
-    eval_results: dict,
-    span_id: str,
-):
-    """Log evaluation results to Phoenix as annotations on the span."""
+def _log_evals_to_phoenix(eval_results: dict, span_id: str):
+    """Log evaluation results to Phoenix as span annotations (Phoenix 13.x API)."""
     if not eval_results or not span_id:
         return
 
     try:
-        import phoenix as px
-        from phoenix.trace import SpanEvaluations
-
-        client = px.Client()
+        client = _get_phoenix_client()
+        if not client:
+            return
 
         for eval_name, result in eval_results.items():
-            eval_df = pd.DataFrame([{
-                "context.span_id": span_id,
-                "score": result.get("score", 0),
-                "label": result.get("label", ""),
-                "explanation": result.get("explanation", ""),
-            }]).set_index("context.span_id")
+            try:
+                label = str(result.get("label", "")) if result.get("label") is not None else None
+                score = float(result.get("score")) if result.get("score") is not None else None
+                explanation = str(result.get("explanation", "")) if result.get("explanation") is not None else None
 
-            client.log_evaluations(
-                SpanEvaluations(eval_name=eval_name, dataframe=eval_df)
-            )
+                client.spans.add_span_annotation(
+                    span_id=span_id,
+                    annotation_name=eval_name,
+                    annotator_kind="LLM",
+                    label=label,
+                    score=score,
+                    explanation=explanation,
+                )
+            except Exception as e:
+                logger.debug(f"Failed to log {eval_name} to Phoenix: {e}")
 
     except Exception as e:
         logger.debug(f"Failed to log evals to Phoenix: {e}")

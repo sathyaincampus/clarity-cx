@@ -106,17 +106,17 @@ streamlit run src/ui/app.py
 | File | Purpose |
 |------|---------|
 | [`src/observability.py`](./src/observability.py) | Arize Phoenix + OpenTelemetry tracing (auto-connects to running Phoenix) |
-| [`scripts/run_evals.py`](./scripts/run_evals.py) | Phoenix LLM-as-Judge — 5 evaluation metrics (Relevance, QA, Toxicity, Hallucination, Summarization) |
+| [`src/evals.py`](./src/evals.py) | Inline LLM-as-Judge — 5 eval metrics run automatically after each analysis |
+| [`scripts/run_evals.py`](./scripts/run_evals.py) | Batch evaluations on existing traces (optional, for manual runs) |
 
-**Running Evaluations Locally:**
+**Evaluations run automatically** when `PHOENIX_ENABLED=true`. After each call analysis, Gemini Flash runs 5 LLM-as-judge metrics (Relevance, QA Quality, Toxicity, Hallucination, Summarization) in a background thread and logs results to Phoenix.
+
 ```bash
 # Terminal 1: Start Phoenix
 python -c "import phoenix as px; px.launch_app(); input('Phoenix running...')"
-# Terminal 2: Run app with tracing
+# Terminal 2: Run app with tracing + auto-evals
 PHOENIX_ENABLED=true streamlit run src/ui/app.py
-# Terminal 3: After analyzing a call, run evals
-python scripts/run_evals.py
-# View results at http://localhost:6006 → clarity-cx project → Annotations tab
+# → Analyze a call → evals run automatically → view at http://localhost:6006
 ```
 
 #### Testing — 26 Tests
