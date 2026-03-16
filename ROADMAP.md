@@ -68,7 +68,7 @@ gantt
 | Analytics dashboard | 🔲 Planned | 3 |
 | Arize Phoenix observability | 🟢 Done | 4 |
 | DeepEval evaluations | 🔲 Planned | 4 |
-| Docker deployment | 🔲 Planned | 5 |
+| Cloud Run source deploy | 🟢 Done | 5 |
 | Google Cloud Run deployment | 🔲 Planned | 5 |
 | FastAPI REST API | 🔲 Planned | 5 |
 | 10–15 sample call transcripts | 🔲 Planned | 2 |
@@ -142,7 +142,7 @@ clarity-cx/
 ├── requirements.txt
 ├── pyproject.toml
 ├── Dockerfile
-├── docker-compose.yml
+├── .gcloudignore
 └── .env.example
 ```
 
@@ -543,9 +543,9 @@ Create 10–15 sample call transcripts covering diverse scenarios:
 
 #### Tasks
 
-- [ ] Create `Dockerfile` with ffmpeg for audio support
-- [ ] Create `docker-compose.yml`
-- [ ] Deploy to Google Cloud Run
+- [x] Create `Dockerfile` with ffmpeg for audio support
+- [x] Deploy to Google Cloud Run via `gcloud run deploy --source .`
+- [x] Configure secrets via Secret Manager
 - [ ] Set up environment variables
 - [ ] Test end-to-end on deployed instance
 

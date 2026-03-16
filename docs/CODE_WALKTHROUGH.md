@@ -68,7 +68,7 @@ clarity-cx/
 │
 ├── .env.example                  # Environment variable template
 ├── Dockerfile                    # Container definition
-├── docker-compose.yml            # Multi-service orchestration
+├── .gcloudignore                 # Cloud Build upload exclusions
 ├── pyproject.toml                # Project metadata & dependencies
 ├── requirements.txt              # Pip-compatible dependency list
 ├── SPEC_DEV.md                   # Full technical specification

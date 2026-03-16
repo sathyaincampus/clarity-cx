@@ -22,6 +22,22 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# ── Auto-seed: populate DB on first boot (Cloud Run starts with empty /tmp) ──
+@st.cache_resource
+def _auto_seed_if_empty():
+    """Check if DB is empty and seed with sample data if so."""
+    from src.database import get_db
+    db = get_db()
+    stats = db.get_dashboard_stats()
+    if stats["total_calls"] == 0:
+        from scripts.seed_database import seed
+        seed()
+        return True
+    return False
+
+_auto_seed_if_empty()
+
+
 # Custom CSS
 st.markdown("""
 <style>

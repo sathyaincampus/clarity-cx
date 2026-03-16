@@ -1,0 +1,14 @@
+# Ignore everything that .gitignore ignores
+#!include:.gitignore
+
+# Extra ignores for Cloud Build
+.git/
+.env
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/
+docs/
+*.md
+!requirements.txt

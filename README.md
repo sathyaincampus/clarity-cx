@@ -69,7 +69,7 @@ All orchestrated via **LangGraph** state machine with parallel processing.
 | Observability | Arize Phoenix + OpenTelemetry |
 | Evaluations | Phoenix LLM-as-Judge (7 metrics) |
 | Testing | pytest (26 tests) |
-| Deployment | Google Cloud Run, Docker |
+| Deployment | Google Cloud Run (source deploy) |
 
 ---
 
@@ -96,13 +96,40 @@ python -m pytest tests/ -v
 
 ---
 
+## 🎯 Try It Out — Evaluator Guide
+
+### Option 1: Paste a Transcript
+
+1. Open the app → **Analyze Call** tab → select **📝 Paste Transcript**
+2. Copy the contents of [`data/sample_transcripts/demo_transcript.txt`](data/sample_transcripts/demo_transcript.txt) and paste into the text box
+3. Click **🚀 Analyze Call**
+4. View the generated summary, quality scores (radar chart), and action items
+
+### Option 2: Upload Audio
+
+1. Open the app → **Analyze Call** tab → select **📤 Upload Audio**
+2. Upload the file [`data/sample_audio/demo_call.mp3`](data/sample_audio/demo_call.mp3)
+3. Click **🚀 Analyze Call** — Gemini will transcribe the audio and run the full pipeline
+4. View the generated transcript, summary, and quality assessment
+
+### Option 3: Use Pre-Loaded Samples
+
+1. Open the app → **Analyze Call** tab → select **📁 Sample Transcript**
+2. Choose any of the 20 pre-loaded e-commerce call scenarios
+3. Click **🚀 Analyze Call**
+
+> **Dashboard & History:** After analyzing a call, switch to the **Dashboard** or **Call History** tab to see the newly added call alongside the 20 auto-seeded sample records.
+
+---
+
 ## 📦 Deployment
 
 ```bash
-# Build & deploy to Google Cloud Run
-docker build -t clarity-cx .
-gcloud run deploy clarity-cx --image clarity-cx --port 8501
+# Deploy to Google Cloud Run (no Docker install needed)
+gcloud run deploy clarity-cx --source . --region us-central1 --port 8501
 ```
+
+The app **auto-seeds the database** with 20 sample calls on first launch.
 
 📖 **See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the full deployment guide.**
 

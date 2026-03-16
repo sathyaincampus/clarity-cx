@@ -1,0 +1,37 @@
+Maria (Agent): Thank you for calling SkyView Retail. My name is Maria. With whom do I have the pleasure of speaking?
+
+David (Customer): Hi, this is David. I'm calling about a return I sent back last week. I just got the email confirmation, and the refund amount is completely wrong.
+
+Maria (Agent): I would be happy to look into that for you, David. I know it can be concerning when the numbers don't match up. May I have your order number, please?
+
+David (Customer): It's order SV-7895-ABC. I returned three sweaters, but I only got forty dollars back. That doesn't make any sense at all.
+
+Maria (Agent): Thank you. Pulling up order SV-7895-ABC now... Okay, I see the return was processed yesterday at our warehouse. Let's break this down together. You returned the Navy Wool Sweater, the Grey V-Neck, and the Black Cashmere blend, is that correct?
+
+David (Customer): Yeah, I put all three of them in the same return box.
+
+Maria (Agent): I see what happened. The Black Cashmere sweater was purchased during our 'Final Clearance' flash sale. As noted on the product page and the digital receipt, clearance items are non-refundable. So, our warehouse only processed the return for the other two eligible items.
+
+David (Customer): Wait, what? I completely missed that it was final sale. So you guys just kept the sweater and my money?
+
+Maria (Agent): I apologize for the confusion, David. No, we definitely don't keep the item. Our standard policy is to ship final sale items back to the customer. You should receive a tracking number for its return shipment to your house by the end of the day.
+
+David (Customer): Okay, fine, I guess that's my fault for not reading the fine print. But even for the other two sweaters, forty dollars is way too low. They were sixty dollars each!
+
+Maria (Agent): You are absolutely right about the price. Let's look at the payment method you used at checkout. The total refund for those two sweaters was $120. However, I see you applied an $80 store gift card to pay for the first portion of this order.
+
+David (Customer): Oh... wait.
+
+Maria (Agent): Yes, when a system refund is issued on a split payment, it automatically credits the gift card balance first. So, $80 went back onto your digital gift card, and the remaining $40 went back to your Visa ending in 4412.
+
+David (Customer): Oh, wow. I completely forgot I used a gift card for that order. That's embarrassing. But how do I access that gift card balance now? I don't have the code anymore.
+
+Maria (Agent): It's no problem at all, David! It happens all the time. The gift card is securely tied to your account email. I can actually generate a fresh email with your digital card code right now so you have it at the top of your inbox. Would you like me to do that?
+
+David (Customer): Yes, please do. Wow, okay, that makes so much more sense now. I'm really sorry for getting snappy with you.
+
+Maria (Agent): Please don't apologize, David! Returns with split payments and clearance items are genuinely confusing to look at on a bank statement. I've just sent that email with your $80 gift card code. Is there anything else I can help clarify for you today?
+
+David (Customer): No, that's everything. You've been incredibly helpful, Maria. Thank you.
+
+Maria (Agent): It was my pleasure. Have a wonderful rest of your day!
