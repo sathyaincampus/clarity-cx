@@ -124,17 +124,21 @@ API docs at: **http://localhost:8000/docs**
 
 ---
 
-## 8. Enable Observability (Optional)
+## 8. Enable Observability & Evaluations (Optional)
 
 ```bash
-# Start Arize Phoenix
-python -m phoenix.server.main serve
+# Terminal 1: Start Arize Phoenix
+python -c "import phoenix as px; px.launch_app(); input('Phoenix running...')"
 
-# Then set in .env:
-PHOENIX_ENABLED=true
+# Terminal 2: Run the app with tracing enabled
+PHOENIX_ENABLED=true streamlit run src/ui/app.py
+# → Analyze at least one call in the UI
+
+# Terminal 3: Run LLM-as-Judge evaluations on the traces
+python scripts/run_evals.py
 ```
 
-Phoenix dashboard at: **http://localhost:6006**
+Phoenix dashboard at: **http://localhost:6006** → click `clarity-cx` project → see spans and evaluation annotations
 
 ---
 

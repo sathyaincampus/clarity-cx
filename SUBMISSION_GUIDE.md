@@ -105,8 +105,19 @@ streamlit run src/ui/app.py
 
 | File | Purpose |
 |------|---------|
-| [`src/observability.py`](./src/observability.py) | Arize Phoenix + OpenTelemetry tracing |
-| [`src/evals.py`](./src/evals.py) | Phoenix LLM-as-Judge — 7 evaluation metrics |
+| [`src/observability.py`](./src/observability.py) | Arize Phoenix + OpenTelemetry tracing (auto-connects to running Phoenix) |
+| [`scripts/run_evals.py`](./scripts/run_evals.py) | Phoenix LLM-as-Judge — 5 evaluation metrics (Relevance, QA, Toxicity, Hallucination, Summarization) |
+
+**Running Evaluations Locally:**
+```bash
+# Terminal 1: Start Phoenix
+python -c "import phoenix as px; px.launch_app(); input('Phoenix running...')"
+# Terminal 2: Run app with tracing
+PHOENIX_ENABLED=true streamlit run src/ui/app.py
+# Terminal 3: After analyzing a call, run evals
+python scripts/run_evals.py
+# View results at http://localhost:6006 → clarity-cx project → Annotations tab
+```
 
 #### Testing — 26 Tests
 
@@ -183,8 +194,7 @@ clarity-cx/
 ├── src/
 │   ├── config.py                     # Configuration management
 │   ├── database.py                   # SQLite persistence (4 tables)
-│   ├── observability.py              # Arize Phoenix + OpenTelemetry
-│   ├── evals.py                      # Phoenix LLM-as-Judge evaluations
+│   ├── observability.py              # Arize Phoenix + OpenTelemetry (auto-connects)
 │   ├── agents/                       # 5 specialized agents
 │   │   ├── base_agent.py             #   BaseAgent ABC
 │   │   ├── intake_agent.py           #   📥 Input validation
@@ -213,6 +223,7 @@ clarity-cx/
 │       └── demo_call.mp3             # Evaluator test audio
 ├── scripts/
 │   ├── seed_database.py              # DB seed script (auto-runs on startup)
+│   ├── run_evals.py                  # Phoenix LLM-as-Judge evaluations (5 metrics)
 │   └── generate_audio.py             # TTS audio generation
 ├── tests/
 │   └── test_clarity.py               # 26 pytest tests
@@ -239,7 +250,7 @@ clarity-cx/
 | **Transcription** | Gemini 2.0 Flash (primary), OpenAI Whisper (fallback) |
 | **Database** | SQLite (4 tables, auto-seeding) |
 | **Observability** | Arize Phoenix + OpenTelemetry |
-| **Evaluations** | Phoenix LLM-as-Judge (7 metrics) |
+| **Evaluations** | Phoenix LLM-as-Judge (5 metrics: Relevance, QA, Toxicity, Hallucination, Summarization) |
 | **Testing** | pytest (26 tests) |
 | **Deployment** | Google Cloud Run (source deploy, Secret Manager) |
 
@@ -256,5 +267,5 @@ clarity-cx/
 | Test Cases | 26 |
 | LLM Providers | 3 (OpenAI, Anthropic, Google) |
 | Quality Dimensions | 5 (Empathy, Resolution, Professionalism, Compliance, Efficiency) |
-| Evaluation Metrics | 7 |
+| Evaluation Metrics | 5 |
 | Documentation Files | 9 |

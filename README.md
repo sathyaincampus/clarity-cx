@@ -67,7 +67,7 @@ All orchestrated via **LangGraph** state machine with parallel processing.
 | Transcription | Gemini 2.0 Flash (primary), Whisper (fallback) |
 | Database | SQLite |
 | Observability | Arize Phoenix + OpenTelemetry |
-| Evaluations | Phoenix LLM-as-Judge (7 metrics) |
+| Evaluations | Phoenix LLM-as-Judge (5 metrics) |
 | Testing | pytest (26 tests) |
 | Deployment | Google Cloud Run (source deploy) |
 

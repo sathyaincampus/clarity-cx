@@ -203,9 +203,13 @@ Methods on `Database` class:
 
 ---
 
-## Evaluation Pipeline (`evals.py`)
+## Evaluation Pipeline (`scripts/run_evals.py`)
 
-Uses Arize Phoenix LLM-as-judge with Gemini Flash:
+Uses Arize Phoenix LLM-as-judge with Gemini Flash. Run separately after analyzing calls:
+
+```bash
+python scripts/run_evals.py
+```
 
 | Metric | What It Evaluates |
 |--------|-------------------|
@@ -214,8 +218,6 @@ Uses Arize Phoenix LLM-as-judge with Gemini Flash:
 | QA Correctness | Quality scores are justified |
 | Toxicity | No inappropriate language |
 | Summarization | Summary quality and completeness |
-| User Frustration | Detects frustrated callers |
-| RAG Relevancy | Context retrieval accuracy |
 
 ---
 

@@ -184,7 +184,7 @@ flowchart LR
 | **Database** | SQLite (call records, analyses, quality scores) |
 | **Structured Output** | Pydantic v2 |
 | **Observability** | Arize Phoenix + OpenTelemetry |
-| **Evaluations** | Phoenix LLM-as-Judge (7 metrics) |
+| **Evaluations** | Phoenix LLM-as-Judge (5 metrics) |
 | **Testing** | pytest (26 tests) |
 | **Deployment** | Google Cloud Run, Docker |
 
