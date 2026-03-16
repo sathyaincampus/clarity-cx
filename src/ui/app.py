@@ -619,6 +619,9 @@ def render_analyze_tab():
         with st.status("🔄 Running analysis pipeline...", expanded=True) as status:
             try:
                 from src.orchestration.graph import analyze_call
+                from src.observability import get_observer
+
+                observer = get_observer()
 
                 # Handle audio file upload
                 input_path = ""
@@ -634,13 +637,29 @@ def render_analyze_tab():
                 else:
                     st.write("📥 **Intake Agent**: Validating input...")
 
-                # Run the pipeline
-                result = asyncio.run(analyze_call(
-                    input_path=input_path,
-                    input_text=input_text,
-                    llm_provider=provider,
-                    llm_model=model,
-                ))
+                # Create trace for Phoenix observability
+                trace = observer.create_trace(
+                    session_id=f"analyze-{os.urandom(4).hex()}",
+                    input_text=input_text[:500] if input_text else f"audio:{input_path}",
+                )
+
+                # Run the pipeline with span tracking
+                with observer.span(trace, "analyze_call_pipeline", {
+                    "input_type": "audio" if input_path else "text",
+                    "llm_provider": provider,
+                    "llm_model": model,
+                }):
+                    result = asyncio.run(analyze_call(
+                        input_path=input_path,
+                        input_text=input_text,
+                        llm_provider=provider,
+                        llm_model=model,
+                    ))
+
+                # End trace with output
+                report = result.get("final_report", {})
+                output_summary = report.get("summary", {}).get("summary", "")[:500] if report else ""
+                observer.end_trace(trace, output_summary)
 
                 # Clean up temp file
                 if input_path:
@@ -653,7 +672,6 @@ def render_analyze_tab():
                 st.session_state["last_result"] = result
 
                 # Save to database for history/dashboard
-                report = result.get("final_report", {})
                 if report:
                     try:
                         from src.database import get_db

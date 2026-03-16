@@ -94,22 +94,48 @@ class ClarityObserver:
             import phoenix as px
             from opentelemetry import trace as otel_trace
 
-            # Launch Phoenix in the background
-            self._phoenix_session = px.launch_app()
-            self._dashboard_url = "http://localhost:6006"
+            # Check if Phoenix is already running at localhost:6006
+            phoenix_running = False
+            try:
+                import httpx
+                resp = httpx.get("http://localhost:6006/v1/traces/arize_phoenix_version", timeout=2)
+                phoenix_running = resp.status_code == 200
+            except Exception:
+                pass
 
-            # Set up OpenTelemetry tracer via Phoenix
-            from opentelemetry.sdk.trace import TracerProvider
+            if phoenix_running:
+                self._dashboard_url = "http://localhost:6006"
+            else:
+                # Launch Phoenix in the background
+                self._phoenix_session = px.launch_app()
+                self._dashboard_url = "http://localhost:6006"
 
+            # Set up OpenTelemetry tracer — always point to localhost:6006
             try:
                 from phoenix.otel import register
-                tracer_provider = register(project_name="clarity-cx")
+                tracer_provider = register(
+                    project_name="clarity-cx",
+                    endpoint="http://localhost:6006/v1/traces",
+                )
             except (ImportError, Exception):
+                from opentelemetry.sdk.trace import TracerProvider
                 tracer_provider = TracerProvider()
                 otel_trace.set_tracer_provider(tracer_provider)
 
             self._tracer = otel_trace.get_tracer("clarity-cx")
             self._enabled = True
+
+            # Auto-instrument LLM providers for automatic span capture
+            try:
+                from openinference.instrumentation.google_genai import GoogleGenAIInstrumentor
+                GoogleGenAIInstrumentor().instrument()
+            except (ImportError, Exception):
+                pass
+            try:
+                from openinference.instrumentation.langchain import LangChainInstrumentor
+                LangChainInstrumentor().instrument()
+            except (ImportError, Exception):
+                pass
 
         except ImportError:
             pass
