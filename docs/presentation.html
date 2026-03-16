@@ -417,7 +417,7 @@
                 <h3>AI-Powered Call Center Intelligence Platform</h3>
                 <p><em>"Contact Center Brain"</em></p>
                 <p class="subtitle">Applied Agentic AI for SWEs — Capstone Project</p>
-                <p class="small">February 22, 2026</p>
+                <p class="small">March 15, 2026</p>
             </section>
 
             <!-- Slide 2: Problem Statement -->
@@ -553,8 +553,8 @@
                     </tr>
                     <tr>
                         <td>🚀 Deployment</td>
-                        <td>Docker + Cloud Run</td>
-                        <td>Containerized deployment</td>
+                        <td>Google Cloud Run</td>
+                        <td>Source deploy + Secret Manager</td>
                     </tr>
                 </table>
             </section>
@@ -571,7 +571,7 @@
                     <div class="agent-card">
                         <span class="emoji">🎙️</span>
                         <span class="name">Transcription</span>
-                        <span class="desc">Whisper STT,<br />speaker labels</span>
+                        <span class="desc">Gemini 2.0 Flash,<br />Whisper fallback</span>
                     </div>
                     <div class="agent-card">
                         <span class="emoji">📝</span>
@@ -831,7 +831,7 @@
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Transcription</span>
-                        <span class="tech-name">Whisper API</span>
+                        <span class="tech-name">Gemini 2.0 Flash + Whisper</span>
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Structured Output</span>
@@ -847,7 +847,7 @@
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Database</span>
-                        <span class="tech-name">SQLite + ChromaDB</span>
+                        <span class="tech-name">SQLite (4 tables)</span>
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Observability</span>
@@ -855,7 +855,7 @@
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Evaluation</span>
-                        <span class="tech-name">DeepEval</span>
+                        <span class="tech-name">Phoenix LLM-as-Judge</span>
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Tools Protocol</span>
@@ -863,11 +863,11 @@
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Deployment</span>
-                        <span class="tech-name">Docker + GCR</span>
+                        <span class="tech-name">Cloud Run (source)</span>
                     </div>
                     <div class="tech-item">
                         <span class="tech-label">Testing</span>
-                        <span class="tech-name">pytest + DeepEval</span>
+                        <span class="tech-name">pytest (26 tests)</span>
                     </div>
                 </div>
             </section>
@@ -935,8 +935,8 @@
                     </tr>
                     <tr>
                         <td>Transcription fails</td>
+                        <td>Gemini 2.0 Flash</td>
                         <td>Whisper API</td>
-                        <td>Deepgram</td>
                         <td><span class="badge badge-orange">Auto-retry alt provider</span></td>
                     </tr>
                     <tr>
@@ -1000,23 +1000,35 @@
                         </table>
                     </div>
                     <div class="col-box">
-                        <h3>🧪 DeepEval Metrics</h3>
+                        <h3>🧪 Phoenix LLM-as-Judge</h3>
                         <table>
                             <tr>
-                                <td>Answer Relevancy</td>
-                                <td><span class="badge">&gt; 0.85</span></td>
-                            </tr>
-                            <tr>
-                                <td>Faithfulness</td>
-                                <td><span class="badge">&gt; 0.90</span></td>
+                                <td>Relevance</td>
+                                <td><span class="badge">Summary ↔ Transcript</span></td>
                             </tr>
                             <tr>
                                 <td>Hallucination</td>
-                                <td><span class="badge badge-red">&lt; 0.10</span></td>
+                                <td><span class="badge badge-red">No fabrication</span></td>
                             </tr>
                             <tr>
-                                <td>Bias</td>
-                                <td><span class="badge badge-red">&lt; 0.05</span></td>
+                                <td>QA Correctness</td>
+                                <td><span class="badge">Scores justified</span></td>
+                            </tr>
+                            <tr>
+                                <td>Toxicity</td>
+                                <td><span class="badge badge-red">No inappropriate</span></td>
+                            </tr>
+                            <tr>
+                                <td>Summarization</td>
+                                <td><span class="badge">Quality + completeness</span></td>
+                            </tr>
+                            <tr>
+                                <td>User Frustration</td>
+                                <td><span class="badge badge-orange">Caller detection</span></td>
+                            </tr>
+                            <tr>
+                                <td>RAG Relevancy</td>
+                                <td><span class="badge">Context accuracy</span></td>
                             </tr>
                         </table>
                     </div>
@@ -1112,8 +1124,8 @@
                     <div class="feature-item"><span class="check">✅</span> Quality Scoring (5-dim)</div>
                     <div class="feature-item"><span class="check">✅</span> PII Detection</div>
                     <div class="feature-item"><span class="check">✅</span> Arize Phoenix Observability</div>
-                    <div class="feature-item"><span class="check">✅</span> DeepEval Evaluation</div>
-                    <div class="feature-item"><span class="check">✅</span> Docker + Cloud Run</div>
+                    <div class="feature-item"><span class="check">✅</span> Phoenix LLM-as-Judge (7 metrics)</div>
+                    <div class="feature-item"><span class="check">✅</span> Cloud Run + Secret Manager</div>
                     <div class="feature-item"><span class="check">✅</span> Responsive Design</div>
                 </div>
             </section>
@@ -1164,22 +1176,38 @@
                 </blockquote>
             </section>
 
-            <!-- Slide 16: Thank You -->
+            <!-- Slide 16: Architecture Diagrams -->
+            <section>
+                <h2>Backend Architecture</h2>
+                <img src="images/backend_architecture.png" alt="Backend Architecture" style="max-height: 550px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);" />
+            </section>
+
+            <!-- Slide 17: Frontend Architecture -->
+            <section>
+                <h2>Frontend Architecture</h2>
+                <img src="images/frontend_architecture.png" alt="Frontend Architecture" style="max-height: 550px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);" />
+            </section>
+
+            <!-- Slide 18: Thank You -->
             <section>
                 <p class="emoji-title">📞</p>
                 <h1>Clarity CX</h1>
                 <p class="subtitle">AI-Powered Call Center Intelligence</p>
-                <p style="margin-top: 1.5em; font-size: 0.8em;">
+                <p style="margin-top: 1em; font-size: 0.7em;">
+                    🌐 <a href="https://clarity-cx-6p5vb63myq-uc.a.run.app" style="color: var(--accent-light);">clarity-cx-6p5vb63myq-uc.a.run.app</a>
+                </p>
+                <p style="margin-top: 1em; font-size: 0.8em;">
                     <span class="badge">5 Agents</span>
                     <span class="badge badge-blue">7 MCP Tools</span>
                     <span class="badge badge-purple">LangGraph</span>
                     <span class="badge badge-orange">Multi-LLM</span>
+                    <span class="badge">26 Tests</span>
                 </p>
                 <p style="margin-top: 2em; font-size: 0.7em; color: #64748b;">
                     Thank you! Questions?
                 </p>
                 <p class="small">
-                    📝 SPEC_DEV.md · 🗺️ ROADMAP.md · 🏗️ ARCHITECTURE.md
+                    📝 SPEC_DEV.md · 🗺️ ROADMAP.md · 🏗️ ARCHITECTURE.md · 📋 SUBMISSION_GUIDE.md
                 </p>
             </section>
 

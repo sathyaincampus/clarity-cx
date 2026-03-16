@@ -62,7 +62,6 @@ clarity-cx/
 │   ├── QUICKSTART.md             # Quick start guide
 │   ├── CODE_WALKTHROUGH.md       # This file
 │   ├── DEPLOYMENT.md             # Google Cloud deployment
-│   ├── SCORING.md                # Rubric assessment
 │   ├── presentation.html         # Presentation slides
 │   └── images/                   # Architecture diagrams
 │

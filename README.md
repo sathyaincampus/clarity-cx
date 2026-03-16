@@ -81,7 +81,7 @@ All orchestrated via **LangGraph** state machine with parallel processing.
 | [Architecture](docs/ARCHITECTURE.md) | System architecture with diagrams |
 | [Code Walkthrough](docs/CODE_WALKTHROUGH.md) | Every module explained |
 | [Deployment](docs/DEPLOYMENT.md) | Google Cloud Run guide |
-| [Scoring](docs/SCORING.md) | Rubric assessment with evidence |
+| [Submission Guide](SUBMISSION_GUIDE.md) | Evaluator submission guide |
 | [Technical Spec](SPEC_DEV.md) | Full technical specification |
 | [Roadmap](ROADMAP.md) | Development timeline |
 
