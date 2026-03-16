@@ -172,7 +172,7 @@ class ClarityObserver:
                     attributes={
                         "session.id": session_id,
                         "user.id": user_id or "",
-                        "input.value": input_text[:500],
+                        "input.value": input_text or "",
                     },
                 )
                 trace.metadata["_otel_span"] = span
@@ -240,7 +240,7 @@ class ClarityObserver:
         otel_span = trace.metadata.pop("_otel_span", None)
         if otel_span:
             try:
-                otel_span.set_attribute("output.value", output[:500])
+                otel_span.set_attribute("output.value", output)
                 otel_span.set_attribute("latency_ms", trace.total_latency_ms)
                 otel_span.end()
             except Exception:
